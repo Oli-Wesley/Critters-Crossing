@@ -35,7 +35,7 @@ int main() {
 	// Add Scenes
 	GameSystem* sys = GameSystem::get();
 	sys->addScene(new testScene, "test");
-	
+
 
 	// set window settings (not needed, there are default values)
 	sys->setFramerate(120);

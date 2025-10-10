@@ -22,7 +22,7 @@ public:
 	sf::Vector2f getGlobalPosition();
 	sf::Vector2f getLocalPosition();
 
-	// Zheight is used for render unorder TODO: USE IT IN RENDER ORDER.
+	// Zheight is used for render order
 	void setLocalZheight(float _z);
 	void setGlobalZheight(float _z);
 	float getLocalZheight();
@@ -43,8 +43,17 @@ public:
 	sf::Vector2f getGlobalScale();
 	sf::Vector2f getLocalScale();
 
+
+	void rotateAroundPoint(float angleDegrees, sf::Vector2f point); // rotate around a specified point
+	void rotateAroundPoint(float angleDegrees); // defaults to center
+
+	float getRotation() const;
+	void setRotation(float angleDegrees);
+
+
 protected:
 	sf::Vector2f position = sf::Vector2f(0, 0);
-	float z_height = 0; // order in render queue (if 0 parent is drawn above) TODO: USE THIS.
+	float z_height = 0; // order in render queue (if 0 parent is drawn above) 
 	sf::Vector2f scale = sf::Vector2f(1, 1);
+	float rotation = 0.f;
 };

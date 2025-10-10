@@ -9,13 +9,16 @@ Texture::Texture(std::string _path)
 
 void Texture::start()
 {
-	setTexture(tex_path);
+	if (tex_path != "")
+		setTexture(tex_path);
 }
 
 bool Texture::setTexture(std::string _path)
 {
-	if (game_object->hasComponent<SpriteRenderer>() && texture.loadFromFile(_path)) {
-		game_object->getComponent<SpriteRenderer>()->getSprite()->setTexture(texture, true);
+	if (game_object->hasComponent<SpriteRenderer>() && texture.loadFromFile(_path))
+	{
+		game_object->getComponent<SpriteRenderer>()->getSprite()->setTexture(
+			texture, true);
 		return true;
 	}
 	return false;
@@ -23,9 +26,11 @@ bool Texture::setTexture(std::string _path)
 
 bool Texture::setTexture(sf::Texture* _texture)
 {
-	if (game_object->hasComponent<SpriteRenderer>() && _texture != nullptr) {
+	if (game_object->hasComponent<SpriteRenderer>() && _texture != nullptr)
+	{
 		texture = *_texture;
-		game_object->getComponent<SpriteRenderer>()->getSprite()->setTexture(texture, true);
+		game_object->getComponent<SpriteRenderer>()->getSprite()->setTexture(
+			texture, true);
 		return true;
 	}
 	return false;

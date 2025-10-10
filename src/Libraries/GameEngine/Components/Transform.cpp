@@ -1,5 +1,6 @@
 #include "Transform.h"
 #include "../GameObject.h"
+#include <cmath>
 
 void Transform::setGlobalPosition(float _x, float _y)
 {
@@ -145,4 +146,35 @@ void Transform::modifyScale(sf::Vector2f _scale)
 {
 	sf::Vector2f current = getLocalScale();
 	setLocalScale(current + _scale);
+}
+
+void Transform::rotateAroundPoint(float angleDegrees)
+{
+	rotateAroundPoint(angleDegrees, getGlobalPosition());
+}
+
+void Transform::rotateAroundPoint(float angleDegrees, sf::Vector2f point)
+{
+	sf::Vector2f globalPos = getGlobalPosition();
+
+	float radians = angleDegrees * (3.14159265f / 180.0f);
+
+	sf::Vector2f offset = globalPos - point;
+
+	float rotatedX = offset.x * cos(radians) - offset.y * sin(radians);
+	float rotatedY = offset.x * sin(radians) + offset.y * cos(radians);
+
+	setGlobalPosition(point.x + rotatedX, point.y + rotatedY);
+
+	rotation += angleDegrees;
+}
+
+float Transform::getRotation() const
+{
+	return rotation;
+}
+
+void Transform::setRotation(float angleDegrees)
+{
+	rotation = angleDegrees;
 }

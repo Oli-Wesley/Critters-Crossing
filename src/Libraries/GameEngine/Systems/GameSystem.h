@@ -1,9 +1,9 @@
 #pragma once
 #include "../GameObject.h"
-#include <unordered_map>
 #include "../Scene.h"
 #include "SFML/System/Vector2.hpp"
 #include <SFML/Graphics.hpp>
+#include <unordered_map>
 
 class GameSystem
 {
@@ -23,6 +23,11 @@ public:
 	void setFramerate(float framerate);
 	void setPhysicsTimestep(float tickspersecond);
 
+	bool isDebug();
+	void setDebug(bool flag);
+
+	sf::RenderWindow* getWindow();
+
 protected:
 	static GameSystem* instance;
 
@@ -31,7 +36,7 @@ protected:
 	std::string target_scene;
 	Scene* currentScene;
 
-	//window settings.
+	// window settings.
 	sf::RenderWindow* window = nullptr;
 	sf::Clock clock;
 	sf::VideoMode resolution = sf::VideoMode(800, 600);
@@ -42,15 +47,19 @@ protected:
 	float accumulator = 0.0f;
 	float physics_timestep = 1.0f / 60.0f; // 60Hz update
 
+	// state flags
+	bool is_debug = false;
+
 	// GameLoop, functions run in this order.
 	void fixedUpdate(float dt);
-	void runPhysics(float timestep); 
+	void runPhysics(float timestep);
 	void update(float dt);
 	void lateUpdate(float dt);
 	void render();
-	void changeScene(); // changeScene last so objects can finish the update loop without breaking.
+	void changeScene(); // changeScene last so objects can finish the update loop
+	// without breaking.
 
-	// Delete copy constructor and assignment operator
+// Delete copy constructor and assignment operator
 	GameSystem() = default; // only allow creation of class within itself
 	GameSystem(GameSystem const&) = delete;
 	void operator=(GameSystem const&) = delete;

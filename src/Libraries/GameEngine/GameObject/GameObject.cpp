@@ -23,7 +23,7 @@ void GameObject::physicsUpdate(float timestep)
 			IPhysicsObject* physics = dynamic_cast<IPhysicsObject*>(comp);
 			if (physics) {
 				physics->physicsUpdate(timestep);
-				//return; // TODO: ONLY DO ON HIGHEST IN HEIRARCHY WITH A PHYSICS OBJECT OR ISSUES MAY HAPPEN (I DONT KNOW IF THIS WILL ACTUALLY CAUSE ISSUES, BUT I THINK IT WILL SO LEAVING THIS COMMENT)
+				//return; // TODO: ONLY DO ON HIGHEST IN HEIRARCHY WITH A PHYSICS OBJECT OR ISSUES MAY HAPPEN <-- it does but easy to avoid so leaving in because funny stuff may be posisble with it...
 			}
 		}
 		// call on all childeren
@@ -75,10 +75,6 @@ void GameObject::lateUpdate(float dt)
 	}
 }
 
-// TODO: change so rendering is based on a z_depth value (so lower numbers get drawn first) 
-// will need to go in GameSystem. as currently it is done in heirarchal order which causes all parents to be drawn ontop of childeren. 
-// (this will also likely be nice for camera stuff in future). ZHEIGHT IS IMPLEMENTED IN TRANSFORM but is currently unused.
-// IDEAS FOR IMPLEMENTATION Change this function to take a std::vector<Irenderable*>*, recursively add all instances of IRenderable then pass this to the gameSystem to sort and render.
 std::vector<IRenderable*> GameObject::render()
 {
 	std::vector<IRenderable*> result;

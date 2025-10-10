@@ -1,5 +1,12 @@
 #include "BoxCollider.h"
 #include "../GameObject.h"
+#include "../Systems/GameSystem.h"
+#include "RigidBody.h"
+
+BoxCollider::BoxCollider(int _x, int _y)
+{
+	setSize(sf::Vector2f(_x, _y));
+}
 
 sf::Vector2f BoxCollider::getPosition()
 {
@@ -19,8 +26,11 @@ void BoxCollider::setPosition(float _x, float _y)
 sf::FloatRect BoxCollider::getCollider()
 {
 	// calculate global position relative to transform
-	sf::Vector2f pos = game_object->getTransform()->getGlobalPosition() + position; // pos 
-	sf::Vector2f scale = sf::Vector2f(game_object->getTransform()->getGlobalScale().x * size.x, game_object->getTransform()->getGlobalScale().y * size.y);  // size 
+	sf::Vector2f pos =
+		game_object->getTransform()->getGlobalPosition() + position; // pos
+	sf::Vector2f scale = sf::Vector2f(
+		game_object->getTransform()->getGlobalScale().x * size.x,
+		game_object->getTransform()->getGlobalScale().y * size.y); // size
 	return sf::FloatRect(pos.x, pos.y, scale.x, scale.y);
 }
 
@@ -41,12 +51,25 @@ void BoxCollider::setSize(float _x, float _y)
 
 void BoxCollider::render(sf::RenderWindow* window)
 {
-	if (is_debug_drawn) {
-		// this is quite expensive to do every frame, but like its debug so idc 
-		sf::RectangleShape rect = sf::RectangleShape(sf::Vector2f(getCollider().width, getCollider().height));
+	if (GameSystem::get()->isDebug())
+	{
+		// this is quite expensive to do every frame, but like its debug so idc
+		sf::RectangleShape rect = sf::RectangleShape(
+			sf::Vector2f(getCollider().width, getCollider().height));
 		rect.setPosition({ getCollider().left, getCollider().top });
 		rect.setFillColor(sf::Color::Transparent);
-		rect.setOutlineColor(sf::Color::Red);
+		if (game_object->hasComponent<RigidBody>())
+		{
+			if (game_object->getComponent<RigidBody>()->is_trigger)
+				rect.setOutlineColor(sf::Color::Blue);
+			else
+				rect.setOutlineColor(sf::Color::Red);
+		}
+		else
+		{
+			rect.setOutlineColor(sf::Color::Green);
+		}
+
 		rect.setOutlineThickness(-2);
 		window->draw(rect);
 	}
@@ -54,8 +77,9 @@ void BoxCollider::render(sf::RenderWindow* window)
 
 float BoxCollider::getRenderOrder()
 {
-	// returns the renderOrder, used for sorting the render_queue so elements get drawn in the correct order. (forces this to be very high, so debug boxes are always drawn on top.
+	// returns the renderOrder, used for sorting the render_queue so elements get
+	// drawn in the correct order. (forces this to be very high, so debug boxes
+	// are always drawn on top.
 
 	return game_object->getTransform()->getGlobalZheight() + 100.0f;
-
 }
