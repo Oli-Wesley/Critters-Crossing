@@ -1,57 +1,50 @@
-#include <iostream>
-#include <SFML/Graphics.hpp>
-#include "Game.h"
+#include "Libraries/GameEngine.h"
+#include "testScene.h"
+#include "Libraries/GameEngine/Components.h"
+#include "Libraries/GameEngine/Systems/PrefabRegistry.h"
 
+int main() {
 
-int main()
-{
-  std::cout << "You should see a window that opens as well as this writing to console..."
-            << std::endl;
+	// Add Prefabs
+	PrefabRegistry* pref = PrefabRegistry::get();
+	pref->RegisterPrefab("test", []() -> GameObject* {
+		GameObject* test = new GameObject("test");
+		// add components etc
+		test->addComponent<SpriteRenderer>();
+		test->addComponent<Texture>("../Data/Images/backButton.png");
+		test->getTransform()->setLocalScale(10, 10);
+		return test;
+		});
 
-  // create window and set up
-  sf::RenderWindow window(sf::VideoMode(1080, 720), "Platform game");
-  window.setFramerateLimit(60);
+	pref->RegisterPrefab("Bouncer", []() -> GameObject* {
+		GameObject* bouncer = new GameObject("Bouncer");
+		bouncer->getTransform()->setLocalScale(10, 10);
 
-  //initialise an instance of the game class
-  Game game(window);
+		bouncer->addComponent<SpriteRenderer>();
+		bouncer->addComponent<Texture>("../Data/Images/ball.png");
+		auto* bouncerCol = bouncer->addComponent<BoxCollider>();
+		bouncerCol->setSize({ 7, 7 });
 
-  //run the init function of the game class and check it all initialises ok
-  if (!game.init())
-  {
-    return 0;
-  }
+		auto* rb = bouncer->addComponent<RigidBody>();
+		rb->bouncyness = 0.8f;
+		rb->friction = 0.2f;
+		rb->mass = 1.0f;
+		return bouncer;
+		});
 
-  // A Clock starts counting as soon as it's created
-  sf::Clock clock;
+	// Add Scenes
+	GameSystem* sys = GameSystem::get();
+	sys->addScene(new testScene, "test");
+	
 
-  // Game loop: run the program as long as the window is open
-  while (window.isOpen())
-  {
-    // check all the window's events that were triggered since the last iteration of the loop
-    sf::Event event;
+	// set window settings (not needed, there are default values)
+	sys->setFramerate(120);
+	sys->setTitle("SystemShowcase");
+	sys->setPhysicsTimestep(90);
+	sys->setResolution(800, 600);
 
-    //calculate delta time
-    sf::Time time = clock.restart();
-    float dt = time.asSeconds();
+	// start game (anything after this in main will not be called untill the game is stopped).
+	sys->start("test");
 
-    //'process inputs' element of the game loop
-    while (window.pollEvent(event))
-    {
-      // "close requested" event: we close the window
-      if (event.type == sf::Event::Closed)
-        window.close();
-    }
-
-
-    //'update' element of the game loop
-    game.update(dt);
-
-    window.clear(sf::Color::Black);
-
-    //'render' element of the game loop
-    game.render();
-    window.display();
-  }
-
-  return 0;
+	return 0;
 }
