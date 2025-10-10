@@ -45,7 +45,7 @@ public:
 
 
 	void rotateAroundPoint(float angle, sf::Vector2f point); // rotate around a specified point
-	void rotateAroundPoint(float angle); // defaults to center
+	void rotateAroundPoint(float angle); // defaults to top left corner.
 
 	float getLocalRotation();
 	void setLocalRotation(float angle);

@@ -7,5 +7,11 @@ class TestScript : public ScriptableBehaviour {
 			game_object->getTransform()->rotateAroundPoint(-250 * dt);
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 			game_object->getTransform()->rotateAroundPoint(250 * dt);
+
+		game_object->getComponent<TestScript>()->test();
+	}
+
+	void test() {
+		std::cout << "Holy it works!, first try babeeeeee" << std::endl;
 	}
 };

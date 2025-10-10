@@ -167,7 +167,7 @@ void Transform::rotateAroundPoint(float angle, sf::Vector2f point)
 }
 
 void Transform::setLocalRotation(float angle) { rotation = angle; }
-float Transform::getLocalRotation()  { return rotation; }
+float Transform::getLocalRotation() { return rotation; }
 
 void Transform::setGlobalRotation(float angle)
 {
@@ -180,7 +180,7 @@ void Transform::setGlobalRotation(float angle)
 	}
 }
 
-float Transform::getGlobalRotation() 
+float Transform::getGlobalRotation()
 {
 	if (!game_object || !game_object->getParent())
 		return rotation;

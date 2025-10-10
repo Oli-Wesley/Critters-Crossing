@@ -45,15 +45,24 @@ public:
 	// returns the component on this gameObject with type.
 	template<typename T>
 	T* getComponent() {
-		for (IComponent* comp : components) {
-			if (auto casted = dynamic_cast<T*>(comp))
-				return casted;
+		if constexpr (std::is_base_of_v<IComponent, T>) {
+			for (IComponent* comp : components) {
+				if (auto casted = dynamic_cast<T*>(comp))
+					return casted;
+			}
+
+			// special case for transform as it isnt in the components list (best to use getTransform)
+			if constexpr (std::is_same_v<T, Transform>)
+				return getTransform();
 		}
-
-		// special case for transform as it isnt in the components list
-		if constexpr (std::is_same_v<T, Transform>)
-			return getTransform();
-
+		// case to get scripts from the scriptable behaviour. 
+		else
+		{
+			IScriptableBehaviour* iscript = getComponent<IScriptableBehaviour>();
+			if (iscript) {
+				return iscript->getScript<T>();
+			}
+		}
 		return nullptr;
 	}
 

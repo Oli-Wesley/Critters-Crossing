@@ -15,17 +15,27 @@ public:
 		scripts.clear();
 	}
 
+
+	// TODO add a way to fetch a script, probably through findComponent in gameObject. so can do gameobj->getComponent<SCRIPT>()->scriptFunction();
 	void addScript(ScriptableBehaviour* script) {
 		scripts.push_back(script);
 		script->addGameObject(game_object);
 		script->start();
 	}
 
+	template<typename T>
+	T* getScript() {
+		for (ScriptableBehaviour* script : scripts) {
+			if (auto casted = dynamic_cast<T*>(script))
+				return casted;
+		}
+	}
+
 	// reuturns all scripts (probably useless)
 	const std::vector<ScriptableBehaviour*>& getScripts() const { return scripts; };
 
 	// all functions that are scriptable. 
-    // Called when the component is enabled
+	// Called when the component is enabled
 	void onEnable() { for (auto* s : scripts) s->onEnable(); }
 	// Called every frame
 	void update(float dt) { for (auto* s : scripts) s->update(dt); }
