@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Libraries/GameEngine.h"
+#include "Scripts/TestScript.h"
 
 class testScene : public Scene {
 public:
@@ -47,5 +47,17 @@ public:
 		background->getTransform()->setLocalScale(8, 9);
 		background->addComponent <SpriteRenderer>();
 		background->addComponent <Texture>("../Data/Images/Pixelartimages/GamePlayBackground.png");
+
+
+		GameObject* test = new GameObject("background");
+		scene_root->addChild(test);
+		test->getTransform()->setLocalScale(20,20);
+		test->getTransform()->setLocalPosition(80, 40);
+		test->addComponent <SpriteRenderer>();
+		test->addComponent <Texture>("../Data/Images/Pixelartimages/Ball.png");
+
+
+		test->addScript<TestScript>();
+
 	}
 };

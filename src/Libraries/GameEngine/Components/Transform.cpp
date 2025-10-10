@@ -148,33 +148,41 @@ void Transform::modifyScale(sf::Vector2f _scale)
 	setLocalScale(current + _scale);
 }
 
-void Transform::rotateAroundPoint(float angleDegrees)
+void Transform::rotateAroundPoint(float angle)
 {
-	rotateAroundPoint(angleDegrees, getGlobalPosition());
+	rotateAroundPoint(angle, getGlobalPosition());
 }
 
-void Transform::rotateAroundPoint(float angleDegrees, sf::Vector2f point)
+void Transform::rotateAroundPoint(float angle, sf::Vector2f point)
 {
 	sf::Vector2f globalPos = getGlobalPosition();
-
-	float radians = angleDegrees * (3.14159265f / 180.0f);
+	float radians = angle * (3.14159265f / 180.0f);
 
 	sf::Vector2f offset = globalPos - point;
-
 	float rotatedX = offset.x * cos(radians) - offset.y * sin(radians);
 	float rotatedY = offset.x * sin(radians) + offset.y * cos(radians);
 
 	setGlobalPosition(point.x + rotatedX, point.y + rotatedY);
-
-	rotation += angleDegrees;
+	setGlobalRotation(getGlobalRotation() + angle);
 }
 
-float Transform::getRotation() const
+void Transform::setLocalRotation(float angle) { rotation = angle; }
+float Transform::getLocalRotation()  { return rotation; }
+
+void Transform::setGlobalRotation(float angle)
 {
-	return rotation;
+	if (!game_object || !game_object->getParent()) {
+		setLocalRotation(angle);
+	}
+	else {
+		float parentGlobal = game_object->getParent()->getTransform()->getGlobalRotation();
+		setLocalRotation(angle - parentGlobal);
+	}
 }
 
-void Transform::setRotation(float angleDegrees)
+float Transform::getGlobalRotation() 
 {
-	rotation = angleDegrees;
+	if (!game_object || !game_object->getParent())
+		return rotation;
+	return rotation + game_object->getParent()->getTransform()->getGlobalRotation();
 }

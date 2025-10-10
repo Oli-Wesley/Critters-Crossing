@@ -44,11 +44,14 @@ public:
 	sf::Vector2f getLocalScale();
 
 
-	void rotateAroundPoint(float angleDegrees, sf::Vector2f point); // rotate around a specified point
-	void rotateAroundPoint(float angleDegrees); // defaults to center
+	void rotateAroundPoint(float angle, sf::Vector2f point); // rotate around a specified point
+	void rotateAroundPoint(float angle); // defaults to center
 
-	float getRotation() const;
-	void setRotation(float angleDegrees);
+	float getLocalRotation();
+	void setLocalRotation(float angle);
+
+	float getGlobalRotation();
+	void setGlobalRotation(float angle);
 
 
 protected:

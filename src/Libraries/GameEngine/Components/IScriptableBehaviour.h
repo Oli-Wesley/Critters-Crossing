@@ -1,41 +1,60 @@
 #pragma once
 #include "IComponent.h"
+#include "../ScriptableBehaviour.h"
 
-class IScriptableBehaviour : public IComponent
-{
+class IScriptableBehaviour : public IComponent {
+private:
+	// array of all scripts on a gameObject.
+	std::vector<ScriptableBehaviour*> scripts;
 public:
-	// reference of IComponent functions
-	// virtual void start() {}    // Called once when the GameObject is first
-	// enabled 
+	virtual ~IScriptableBehaviour() {
+		for (auto* s : scripts) {
+			s->onDestroy();
+			delete s;
+		}
+		scripts.clear();
+	}
 
-	// virtual void onEnable() {} // Called when the component is enabled
+	void addScript(ScriptableBehaviour* script) {
+		scripts.push_back(script);
+		script->addGameObject(game_object);
+		script->start();
+	}
 
-	// virtual void update(float dt) {}     // Called every frame
+	// reuturns all scripts (probably useless)
+	const std::vector<ScriptableBehaviour*>& getScripts() const { return scripts; };
 
-	// virtual void lateUpdate(float dt) {} // called after update
-
-	// virtual void onDisable() {}          // Called when the GameObject is disabled 
-
-	// virtual void onDestroy() {}          // Called when the component
-	// is destroyed
-
-	// other functions not defined by IComponent that scripts may need:
-
-	// lifecycle stuff.
-	virtual void fixedUpdate(float timestep) {}; // called at fixed intervals.
+	// all functions that are scriptable. 
+    // Called when the component is enabled
+	void onEnable() { for (auto* s : scripts) s->onEnable(); }
+	// Called every frame
+	void update(float dt) { for (auto* s : scripts) s->update(dt); }
+	// called after update
+	void lateUpdate(float dt) { for (auto* s : scripts) s->lateUpdate(dt); }
+	// Called when the GameObject is disabled 
+	void onDisable() { for (auto* s : scripts) s->onDisable(); }
+	// Called when the component is destroyed
+	void onDestroy() { for (auto* s : scripts) s->onDestroy(); }
+	// called at fixed intervals. (physics tick)
+	void fixedUpdate(float timestep) { for (auto* s : scripts) s->fixedUpdate(timestep); }
 
 	// Physics stuff.
-	virtual void onTriggerEnter(GameObject*) {}; // Called when entering a
-	// trigger.
-	virtual void onTriggerStay(GameObject*) {};  // Called every frame inside a
-	// trigger.
-	virtual void onTriggerExit(GameObject*) {};  // Called when exiting a trigger.
-	virtual void onCollision(GameObject*) {};    // Called when colliding with
-	// another object.
+	// Called when entering a trigger.
+	void onTriggerEnter(GameObject* obj) { for (auto* s : scripts) s->onTriggerEnter(obj); }
+	// Called every frame inside a trigger.
+	void onTriggerStay(GameObject* obj) { for (auto* s : scripts) s->onTriggerStay(obj); }
+	// Called when exiting a trigger.
+	void onTriggerExit(GameObject* obj) { for (auto* s : scripts) s->onTriggerExit(obj); }
+	// Called when colliding with another object.
+	void onCollision(GameObject* obj) { for (auto* s : scripts) s->onCollision(obj); }
 
-// Clickable stuff.
-	virtual void onClick() {};     // Called when this object is clicked
-	virtual void onRelease() {};   // Called when mouse released on object
-	virtual void onHover() {};     // Called when mouse hovers over object
-	virtual void onStopHover() {}; // called once when mouse leaves collider
+	// Clickable stuff (needs clickable component)
+	// Called when this object is clicked
+	void onClick() { for (auto* s : scripts) s->onClick(); }
+	// Called when mouse released on object
+	void onRelease() { for (auto* s : scripts) s->onRelease(); }
+	// Called when mouse hovers over object
+	void onHover() { for (auto* s : scripts) s->onHover(); }
+	// called once when mouse leaves collider
+	void onStopHover() { for (auto* s : scripts) s->onStopHover(); }
 };

@@ -7,7 +7,6 @@ GameObject::GameObject(std::string _name)
 {
 	transform.setGameObject(this);
 	name = _name;
-
 }
 
 GameObject::~GameObject()

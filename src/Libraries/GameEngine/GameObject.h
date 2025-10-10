@@ -1,12 +1,10 @@
 #pragma once
-
-#include <unordered_map>
 #include <vector>
 #include <typeindex>
 #include "Components/IComponent.h"  
 #include "Components/IRenderable.h"  
 #include "Components/Transform.h"
-#include <SFML/Graphics.hpp>
+#include "Components/IScriptableBehaviour.h"
 
 class GameObject {
 public:
@@ -51,6 +49,11 @@ public:
 			if (auto casted = dynamic_cast<T*>(comp))
 				return casted;
 		}
+
+		// special case for transform as it isnt in the components list
+		if constexpr (std::is_same_v<T, Transform>)
+			return getTransform();
+
 		return nullptr;
 	}
 
@@ -77,6 +80,32 @@ public:
 		false;
 	}
 
+	// attatch a script to the gameObject
+	template<typename T, typename... Args>
+	T* addScript(Args&&... args) {
+		static_assert(std::is_base_of<ScriptableBehaviour, T>::value,
+			"T must derive from ScriptableBehaviour");
+
+		// Check if the GameObject already has a Scriptable interface
+		IScriptableBehaviour* script_interface = nullptr;
+		for (IComponent* comp : components) {
+			script_interface = dynamic_cast<IScriptableBehaviour*>(comp);
+			if (script_interface) break;
+		}
+
+		// If not found, add one
+		if (!script_interface) {
+			script_interface = addComponent<IScriptableBehaviour>();
+		}
+
+		// Create the new script
+		T* new_script = new T(std::forward<Args>(args)...);
+
+		// Add it to the script interface
+		script_interface->addScript(new_script);
+
+		return new_script;
+	}
 
 	void addChild(GameObject* _game_obj);
 
