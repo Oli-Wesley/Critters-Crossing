@@ -7,21 +7,13 @@ int main() {
 
 	// Add Prefabs
 	PrefabRegistry* pref = PrefabRegistry::get();
-	pref->RegisterPrefab("test", []() -> GameObject* {
-		GameObject* test = new GameObject("test");
-		// add components etc
-		test->addComponent<SpriteRenderer>();
-		test->addComponent<Texture>("../Data/Images/backButton.png");
-		test->getTransform()->setLocalScale(10, 10);
-		return test;
-		});
 
 	pref->RegisterPrefab("Bouncer", []() -> GameObject* {
 		GameObject* bouncer = new GameObject("Bouncer");
 		bouncer->getTransform()->setLocalScale(10, 10);
 
 		bouncer->addComponent<SpriteRenderer>();
-		bouncer->addComponent<Texture>("../Data/Images/ball.png");
+		bouncer->addComponent<Texture>("../Data/Images/Pixelartimages/ball.png");
 		auto* bouncerCol = bouncer->addComponent<BoxCollider>();
 		bouncerCol->setSize({ 7, 7 });
 

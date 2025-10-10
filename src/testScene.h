@@ -15,7 +15,7 @@ public:
 		floorCol->setSize(16, 8);
 
 		floor->addComponent<SpriteRenderer>();
-		floor->addComponent<Texture>("../Data/Images/Box.png");
+		floor->addComponent<Texture>("../Data/Images/Pixelartimages/Box.png");
 
 		auto* floorRb = floor->addComponent<RigidBody>();
 		floorRb->is_static = true;
@@ -46,9 +46,6 @@ public:
 		background->getTransform()->setLocalZheight(-1);
 		background->getTransform()->setLocalScale(8, 9);
 		background->addComponent <SpriteRenderer>();
-		background->addComponent <Texture>("../Data/Images/GamePlayBackground.png");
-
-
-		scene_root->addChild(PrefabRegistry::get()->InstantiatePrefab("test", 10, 10));
+		background->addComponent <Texture>("../Data/Images/Pixelartimages/GamePlayBackground.png");
 	}
 };
