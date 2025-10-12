@@ -10,7 +10,7 @@ void S_CharactorCreator::start()
 	addTextureToMap(Person, "People/person 2.png", 1);
 	addTextureToMap(Person, "People/person 3.png", 1);
 	addTextureToMap(Person, "People/person 4.png", 1);
-	// Clothes
+	// Clothes 
 	addTextureToMap(Clothes, "Clothes/blue hoodie.png", 1);
 	addTextureToMap(Clothes, "Clothes/green hoodie.png", 1);
 	addTextureToMap(Clothes, "Clothes/red hoodie.png", 1);
@@ -18,7 +18,7 @@ void S_CharactorCreator::start()
 	addTextureToMap(Clothes, "Clothes/purple tshirt.png", 1);
 	addTextureToMap(Clothes, "Clothes/orange tshirt.png", 1);
 	addTextureToMap(Clothes, "Clothes/white tshirt.png", 1);
-	// hair
+	// hair 
 	addTextureToMap(Hair, "extras/NONE.png", 1); // NONE for no Texture (bald).
 	addTextureToMap(Hair, "Hair/black fluffy.png", 1);
 	addTextureToMap(Hair, "Hair/blond fluffy.png", 1);
@@ -29,7 +29,7 @@ void S_CharactorCreator::start()
 	addTextureToMap(Hair, "Hair/blond long.png", 1);
 	addTextureToMap(Hair, "Hair/ginger long.png", 1);
 	addTextureToMap(Hair, "Hair/brown long.png", 1);
-	// facial hair
+	// facial hair 
 	addTextureToMap(FacialHair, "extras/NONE.png", 10); // higher probability to have no beard.
 	addTextureToMap(FacialHair, "facial hair/black beard.png", 1); 
 	addTextureToMap(FacialHair, "facial hair/brown beard.png", 1);
@@ -45,7 +45,7 @@ void S_CharactorCreator::start()
 
 	addTextureToMap(FacialHair, "facial hair/brown stubble.png", 1);
 	addTextureToMap(FacialHair, "facial hair/ginger stubble.png", 1);
-	// hats
+	// hats 
 	addTextureToMap(Hats, "extras/NONE.png", 6); // 50% chance to have no hats
 	addTextureToMap(Hats, "hats/beanie 1.png", 1);
 	addTextureToMap(Hats, "hats/beanie 2.png", 1);
@@ -53,10 +53,53 @@ void S_CharactorCreator::start()
 	addTextureToMap(Hats, "hats/bucket hat.png", 1);
 	addTextureToMap(Hats, "hats/cap.png", 1);
 	addTextureToMap(Hats, "hats/top hat.png", 1);
-	// extras
+	// extras 
 	addTextureToMap(Extras, "extras/NONE.png", 20); // 66% chance to have no extras
 	addTextureToMap(Extras, "extras/glasses.png", 9); 
 	addTextureToMap(Extras, "extras/overalls.png", 1); // super rare mario overalls.  
+
+	PrefabRegistry* pref = PrefabRegistry::get();
+	//person object.
+	GameObject* person = pref->InstantiatePrefab("P_Renderable_Object");
+	game_object->addChild(person);
+	person->setName("person");
+	person->getTransform()->setLocalZheight(1);
+
+	//clothes object.
+	GameObject* clothes = pref->InstantiatePrefab("P_Renderable_Object");
+	game_object->addChild(clothes);
+	clothes->setName("clothes");
+	clothes->getTransform()->setLocalZheight(1.1);
+
+	//hair object.
+	GameObject* hair = pref->InstantiatePrefab("P_Renderable_Object");
+	game_object->addChild(hair);
+	hair->setName("hair");
+	hair->getTransform()->setLocalZheight(1.4);
+
+	//facial_hair object.
+	GameObject* facial_hair = pref->InstantiatePrefab("P_Renderable_Object");
+	game_object->addChild(facial_hair);
+	facial_hair->setName("facial_hair");
+	facial_hair->getTransform()->setLocalZheight(1.2);
+
+	//hats object.
+	GameObject* hat = pref->InstantiatePrefab("P_Renderable_Object");
+	game_object->addChild(hat);
+	hat->setName("hat");
+	hat->getTransform()->setLocalZheight(1.5);
+
+	//extras object.
+	GameObject* extras = pref->InstantiatePrefab("P_Renderable_Object");
+	game_object->addChild(extras);
+	extras->setName("extras");
+	extras->getTransform()->setLocalZheight(1.3);
+
+	////eyes object. (unused, but might be used later).  (just adding 2 eyes will add ~30k new possible people.
+	//GameObject* eyes = pref->InstantiatePrefab("P_Renderable_Object");
+	//game_object->addChild(eyes);
+	//eyes->setName("eyes");
+
 }
 
 // actually create the character.
@@ -105,9 +148,8 @@ sf::Texture* S_CharactorCreator::getRandomTextureFromArray(std::vector<std::pair
 	for (std::pair<sf::Texture*, float> pair : array)
 		total_weight += pair.second;
 
-	
+	// generate random value
 	float random_value = static_cast<float>(rand()) / RAND_MAX * total_weight;
-
 
 	// Select based on weighted probability
 	float cumulative = 0.0f;
