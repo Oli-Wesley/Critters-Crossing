@@ -131,6 +131,7 @@ public:
 	void setParent(GameObject*);
 
 	std::string getName();
+	void setName(std::string _name);
 
 protected:
 	std::string name;

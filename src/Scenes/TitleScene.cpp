@@ -23,10 +23,10 @@ void TitleScene::load()
   play_button->addComponent<Clickable>();
   play_button->addComponent<Texture>();
   play_button->addComponent<BoxCollider>(42, 16);
-  play_button->addComponent<SceneButton>(
-    "../Data/Images/PlayButton.png",
-    "../Data/Images/PlayButton_hover.png",
-    "Level");
+  //play_button->addComponent<SceneButton>(
+  //  "../Data/Images/PlayButton.png",
+  //  "../Data/Images/PlayButton_hover.png",
+  //  "Level");
   scene_root->addChild(play_button);
 
   // options button
@@ -37,9 +37,9 @@ void TitleScene::load()
   quit_button->addComponent<Clickable>();
   quit_button->addComponent<Texture>();
   quit_button->addComponent<BoxCollider>(32, 16);
-  quit_button->addComponent<SceneButton>(
-    "../Data/Images/QuitButton.png",
-    "../Data/Images/QuitButton_hover.png",
-    "~Quit~");
+  //quit_button->addComponent<SceneButton>(
+  //  "../Data/Images/QuitButton.png",
+  //  "../Data/Images/QuitButton_hover.png",
+  //  "~Quit~");
   scene_root->addChild(quit_button);
 }
