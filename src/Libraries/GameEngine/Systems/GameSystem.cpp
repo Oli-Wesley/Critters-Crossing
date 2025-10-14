@@ -191,6 +191,7 @@ void GameSystem::render()
 				}
 			}
 		}
+		// render now sorted list
 		for (IRenderable* var : renderables)
 		{
 			var->render(window);

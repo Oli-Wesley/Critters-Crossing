@@ -12,6 +12,7 @@ public:
 	void start() override;
 
 	void createCharacter();
+	bool createSimilarCharacter(); // returns true if changed enough to be a different person (in which case they must be denied). 
 
 	void update(float dt) override;
 
@@ -32,7 +33,9 @@ private:
 	std::string relative_path = "../Data/Images/PeopleLayers/";
 	std::map<categories, std::vector<std::pair<sf::Texture*, float>>> asset_database;
 
+	float change_distinct_features = 0.5;
 
+	float recreate_cooldown = 0;
 
 	bool addTextureToMap(categories map_key, std::string texture_path, float spawn_probability);
 };
