@@ -106,7 +106,6 @@ void S_CharactorCreator::start()
 	game_object->addChild(eyes_obj);
 	eyes_obj->setName("eyes");
 	eyes_obj->getTransform()->setLocalZheight(1.3);
-
 }
 
 // actually create the character.
@@ -114,49 +113,64 @@ void S_CharactorCreator::createCharacter()
 {
 	// Get children and set their texture from a random, weighted texture from the corresponding asset database array
 
-	person_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Person]));
+	person_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Person));
 
-	clothes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Clothes]));
+	clothes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Clothes));
 
-	hair_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Hair]));
+	hair_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Hair));
 
-	facial_hair_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[FacialHair]));
+	facial_hair_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(FacialHair));
 
-	hats_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Hats]));
+	hats_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Hats));
 
-	extras_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Extras]));
+	extras_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Extras));
 
-	eyes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Eyes]));
+	eyes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Eyes));
 }
 
 // returns true if notable changes have been made. (should be 50% of the time)
 bool S_CharactorCreator::createSimilarCharacter()
 {
-	hats_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Hats]));
+	// always change hats and clothes (the actual challenge)
+	hats_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Hats));
 
-	clothes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Clothes]));
+	clothes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Clothes));
 
 	// change a distinct feature (person, eyes, beard ect..)
 	int changable_object_count = 4; // eyes // facial hair // hair // person 
-	bool did_change = 0;
+	currentCharacter old_character = current_character;
+	int fallback_count = changable_object_count * 2; // fallback count so it cant run forever if it gets extremely lucky 
 
-	// I HATE THIS CODE TODO: MAKE IT NOT ASS
-	while (((double)rand()) / RAND_MAX < change_distinct_features) {
+	// 50% chance to change 1 thing, 50% after that to change a second ect...
+	while (((double)rand()) / RAND_MAX < change_distinct_features && fallback_count > 0) {
 		switch (rand() % changable_object_count) {
 		case 0:
-			person_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Person]));
+			person_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Person));
 		case 1:
-			eyes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Eyes]));
+			eyes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Eyes));
 		case 2:
-			facial_hair_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[FacialHair]));
-
+			facial_hair_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(FacialHair));
 		case 3:
-			hair_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Hair]));
+			hair_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Hair));
 		}
-		did_change = 1;
+		fallback_count--; // decrement fallback count to limit amount of changes. 
 	}
-	return did_change;
+
+	// check if the character changed (have to do this way bc choosing a new object could re-generate the same old one. 
+	// if I had thought about my code before coding theres probably a better way to do all of this, but oh well. 
+	// might come back and re-write later, but it works perfectly (i hope) code is just ugly
+	if (old_character.eyes != current_character.eyes)
+		return true;
+	else if (old_character.facial_hair != current_character.facial_hair)
+		return true;
+	else if (old_character.hair != current_character.hair)
+		return true;
+	else if (old_character.person != current_character.person)
+		return true;
+
+	return false; // nothing changed 
 }
+
 
 void S_CharactorCreator::update(float dt)
 {
@@ -176,8 +190,15 @@ void S_CharactorCreator::update(float dt)
 		recreate_cooldown -= dt;
 }
 
-sf::Texture* S_CharactorCreator::getRandomTextureFromArray(std::vector<std::pair<sf::Texture*, float>> array)
+sf::Texture* S_CharactorCreator::getRandomTextureFromkey(categories category)
 {
+	std::vector<std::pair<sf::Texture*, float>>array = asset_database[category];
+
+	// define pair for return value.
+	std::pair<sf::Texture*, int> returnval;
+	returnval.first = nullptr;
+	returnval.second = -1;
+
 	// Calculate total weight
 	float total_weight = 0.0f;
 	for (std::pair<sf::Texture*, float> pair : array)
@@ -188,10 +209,29 @@ sf::Texture* S_CharactorCreator::getRandomTextureFromArray(std::vector<std::pair
 
 	// Select based on weighted probability
 	float cumulative = 0.0f;
+	int count = 0;
 	for (const auto& pair : array) {
 		cumulative += pair.second;
-		if (random_value <= cumulative)
+		if (random_value <= cumulative) {
+			switch (category) {
+			case Person:
+				current_character.person = count;
+			case Clothes:
+				current_character.clothes = count;
+			case Hair:
+				current_character.hair= count;
+			case FacialHair:
+				current_character.facial_hair = count;
+			case Hats:
+				current_character.hats = count;
+			case Extras:
+				current_character.extras = count;
+			case Eyes:
+				current_character.eyes = count;
+			}
 			return pair.first;
+		}
+		count++;
 	}
 
 	return nullptr;

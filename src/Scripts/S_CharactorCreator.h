@@ -7,18 +7,6 @@
 #include <SFML/Graphics.hpp>
 
 class S_CharactorCreator : public ScriptableBehaviour {
-
-public:
-	void start() override;
-
-	void createCharacter();
-	bool createSimilarCharacter(); // returns true if changed enough to be a different person (in which case they must be denied). 
-
-	void update(float dt) override;
-
-	sf::Texture* getRandomTextureFromArray(std::vector<std::pair<sf::Texture*, float>> array);
-
-
 private:
 	enum categories {
 		Person,
@@ -30,6 +18,28 @@ private:
 		Eyes
 	};
 
+	struct currentCharacter{
+		int person = -1;
+		int clothes = -1;
+		int hair = -1;
+		int facial_hair = -1;
+		int hats = -1;
+		int extras = -1;
+		int eyes = -1;
+	};
+
+public:
+	void start() override;
+
+	void createCharacter();
+	bool createSimilarCharacter(); // returns true if changed enough to be a different person (in which case they must be denied). 
+
+	void update(float dt) override;
+
+	sf::Texture* getRandomTextureFromkey(categories);
+
+
+private:
 	GameObject* person_obj = nullptr;
 	GameObject* clothes_obj = nullptr;
 	GameObject* hair_obj = nullptr;
@@ -37,6 +47,8 @@ private:
 	GameObject* hats_obj = nullptr;
 	GameObject* extras_obj = nullptr;
 	GameObject* eyes_obj = nullptr;
+
+	currentCharacter current_character;
 
 	std::string relative_path = "../Data/Images/PeopleLayers/";
 	std::map<categories, std::vector<std::pair<sf::Texture*, float>>> asset_database;

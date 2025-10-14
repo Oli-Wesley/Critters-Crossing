@@ -179,6 +179,15 @@ std::vector<GameObject*> GameObject::getChilderen()
 	return childeren;
 }
 
+GameObject* GameObject::getChildByName(std::string name)
+{
+	for (GameObject* child : childeren) {
+		if (child->getName() == name)
+			return child;
+	}
+	return nullptr;
+}
+
 GameObject* GameObject::getParent()
 {
 	return parent;

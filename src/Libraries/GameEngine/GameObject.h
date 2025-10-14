@@ -127,6 +127,7 @@ public:
 
 	Transform* getTransform();
 	std::vector<GameObject*> getChilderen();
+	GameObject* getChildByName(std::string name);
 	GameObject* getParent();
 	void setParent(GameObject*);
 
