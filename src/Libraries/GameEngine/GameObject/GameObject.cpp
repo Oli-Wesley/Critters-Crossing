@@ -118,10 +118,11 @@ void GameObject::destroy(bool destroy_children)
 	destroy(); // call other function to destroy components.
 }
 
-void GameObject::addChild(GameObject* _game_ob)
+GameObject* GameObject::addChild(GameObject* _game_ob)
 {
 	childeren.push_back(_game_ob);
 	_game_ob->setParent(this);
+	return _game_ob;
 }
 
 bool GameObject::isActive()

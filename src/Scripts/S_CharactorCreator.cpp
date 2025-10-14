@@ -66,101 +66,76 @@ void S_CharactorCreator::start()
 
 	PrefabRegistry* pref = PrefabRegistry::get();
 	//person object.
-	GameObject* person = pref->InstantiatePrefab("P_Renderable_Object");
-	game_object->addChild(person);
-	person->setName("person");
-	person->getTransform()->setLocalZheight(1);
+	person_obj = pref->InstantiatePrefab("P_Renderable_Object");
+	game_object->addChild(person_obj);
+	person_obj->setName("person");
+	person_obj->getTransform()->setLocalZheight(1);
 
 	//clothes object.
-	GameObject* clothes = pref->InstantiatePrefab("P_Renderable_Object");
-	game_object->addChild(clothes);
-	clothes->setName("clothes");
-	clothes->getTransform()->setLocalZheight(1.1);
+	clothes_obj = pref->InstantiatePrefab("P_Renderable_Object");
+	game_object->addChild(clothes_obj);
+	clothes_obj->setName("clothes");
+	clothes_obj->getTransform()->setLocalZheight(1.1);
 
 	//hair object.
-	GameObject* hair = pref->InstantiatePrefab("P_Renderable_Object");
-	game_object->addChild(hair);
-	hair->setName("hair");
-	hair->getTransform()->setLocalZheight(1.5);
+	hair_obj = pref->InstantiatePrefab("P_Renderable_Object");
+	game_object->addChild(hair_obj);
+	hair_obj->setName("hair");
+	hair_obj->getTransform()->setLocalZheight(1.5);
 
 	//facial_hair object.
-	GameObject* facial_hair = pref->InstantiatePrefab("P_Renderable_Object");
-	game_object->addChild(facial_hair);
-	facial_hair->setName("facial_hair");
-	facial_hair->getTransform()->setLocalZheight(1.2);
+	facial_hair_obj = pref->InstantiatePrefab("P_Renderable_Object");
+	game_object->addChild(facial_hair_obj);
+	facial_hair_obj->setName("facial_hair");
+	facial_hair_obj->getTransform()->setLocalZheight(1.2);
 
 	//hats object.
-	GameObject* hat = pref->InstantiatePrefab("P_Renderable_Object");
-	game_object->addChild(hat);
-	hat->setName("hat");
-	hat->getTransform()->setLocalZheight(1.6);
+	hats_obj = pref->InstantiatePrefab("P_Renderable_Object");
+	game_object->addChild(hats_obj);
+	hats_obj->setName("hat");
+	hats_obj->getTransform()->setLocalZheight(1.6);
 
 	//extras object.
-	GameObject* extras = pref->InstantiatePrefab("P_Renderable_Object");
-	game_object->addChild(extras);
-	extras->setName("extras");
-	extras->getTransform()->setLocalZheight(1.4);
+	extras_obj = pref->InstantiatePrefab("P_Renderable_Object");
+	game_object->addChild(extras_obj);
+	extras_obj->setName("extras");
+	extras_obj->getTransform()->setLocalZheight(1.4);
 
 	//eyes object. 
-	GameObject* eyes = pref->InstantiatePrefab("P_Renderable_Object");
-	game_object->addChild(eyes);
-	eyes->setName("eyes");
-	eyes->getTransform()->setLocalZheight(1.3);
+	eyes_obj = pref->InstantiatePrefab("P_Renderable_Object");
+	game_object->addChild(eyes_obj);
+	eyes_obj->setName("eyes");
+	eyes_obj->getTransform()->setLocalZheight(1.3);
 
 }
 
 // actually create the character.
 void S_CharactorCreator::createCharacter()
 {
-	std::vector <GameObject*> childeren = game_object->getAllChilderen();
 	// Get children and set their texture from a random, weighted texture from the corresponding asset database array
-	for (GameObject* child : childeren) {
-		if (child->getName() == "person")
-		{
-			child->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Person]));
-		}
-		else if (child->getName() == "clothes")
-		{
-			child->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Clothes]));
-		}
-		else if (child->getName() == "hair")
-		{
-			child->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Hair]));
-		}
-		else if (child->getName() == "facial_hair")
-		{
-			child->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[FacialHair]));
-		}
-		else if (child->getName() == "hat")
-		{
-			child->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Hats]));
-		}
-		else if (child->getName() == "extras")
-		{
-			child->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Extras]));
-		}
-		else if (child->getName() == "eyes")
-		{
-			child->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Eyes]));
-		}
-	}
+
+	person_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Person]));
+
+	clothes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Clothes]));
+
+	hair_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Hair]));
+
+	facial_hair_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[FacialHair]));
+
+	hats_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Hats]));
+
+	extras_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Extras]));
+
+	eyes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Eyes]));
 }
 
 // returns true if notable changes have been made. (should be 50% of the time)
 bool S_CharactorCreator::createSimilarCharacter()
 {
-	std::vector <GameObject*> childeren = game_object->getAllChilderen();
-	// change features that wont change the person (clothes, hat)
-	for (GameObject* child : childeren) {
-		if (child->getName() == "hat")
-		{
-			child->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Hats]));
-		}
-		else if (child->getName() == "clothes")
-		{
-			child->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Clothes]));
-		}
-	}
+	hats_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Hats]));
+
+	clothes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Clothes]));
+
 	// change a distinct feature (person, eyes, beard ect..)
 	int changable_object_count = 4; // eyes // facial hair // hair // person 
 	bool did_change = 0;
@@ -169,25 +144,14 @@ bool S_CharactorCreator::createSimilarCharacter()
 	while (((double)rand()) / RAND_MAX < change_distinct_features) {
 		switch (rand() % changable_object_count) {
 		case 0:
-			for (GameObject* child : childeren) {
-				if (child->getName() == "person")
-					child->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Person]));
-			}
+			person_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Person]));
 		case 1:
-			for (GameObject* child : childeren) {
-				if (child->getName() == "eyes")
-					child->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Eyes]));
-			}
+			eyes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Eyes]));
 		case 2:
-			for (GameObject* child : childeren) {
-				if (child->getName() == "facial_hair")
-					child->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[FacialHair]));
-			}
+			facial_hair_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[FacialHair]));
+
 		case 3:
-			for (GameObject* child : childeren) {
-				if (child->getName() == "hair")
-					child->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Hair]));
-			}
+			hair_obj->getComponent<Texture>()->setTexture(getRandomTextureFromArray(asset_database[Hair]));
 		}
 		did_change = 1;
 	}

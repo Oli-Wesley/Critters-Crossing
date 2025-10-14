@@ -116,7 +116,7 @@ public:
 		return new_script;
 	}
 
-	void addChild(GameObject* _game_obj);
+	GameObject* addChild(GameObject* _game_obj);
 
 	bool isActive();
 	void setActive(bool);

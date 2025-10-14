@@ -27,8 +27,16 @@ private:
 		FacialHair,
 		Hats,
 		Extras,
-		Eyes // CURRENTLY UNUSED.
+		Eyes
 	};
+
+	GameObject* person_obj = nullptr;
+	GameObject* clothes_obj = nullptr;
+	GameObject* hair_obj = nullptr;
+	GameObject* facial_hair_obj = nullptr;
+	GameObject* hats_obj = nullptr;
+	GameObject* extras_obj = nullptr;
+	GameObject* eyes_obj = nullptr;
 
 	std::string relative_path = "../Data/Images/PeopleLayers/";
 	std::map<categories, std::vector<std::pair<sf::Texture*, float>>> asset_database;
