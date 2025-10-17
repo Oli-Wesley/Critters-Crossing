@@ -176,25 +176,6 @@ std::vector<GameObject*> S_CharactorCreator::getCurrentCharacter()
 	return game_object->getChilderen();
 }
 
-
-void S_CharactorCreator::update(float dt)
-{
-	if (recreate_cooldown <= 0) {
-		recreate_cooldown = 0;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
-		{
-			createCharacter();
-			recreate_cooldown = 0.1f;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
-			std::cout << createSimilarCharacter() << "\n";
-			recreate_cooldown = 0.1f;
-		}
-	}
-	else
-		recreate_cooldown -= dt;
-}
-
 sf::Texture* S_CharactorCreator::getRandomTextureFromkey(categories category)
 {
 	std::vector<std::pair<sf::Texture*, float>>array = asset_database[category];

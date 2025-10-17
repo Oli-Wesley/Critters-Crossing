@@ -3,7 +3,7 @@
 #include "../Scripts/S_CharactorCreator.h"
 
 REGISTER_PREFAB(
-	P_Character_Creator,            // name
+	P_CharacterCreator,            // name
 	[]() -> GameObject* // lambda construction func
 	{
 

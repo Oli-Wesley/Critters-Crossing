@@ -35,9 +35,6 @@ public:
 	bool createSimilarCharacter(); // returns true if changed enough to be a different person (in which case they must be denied). 
 
 	std::vector<GameObject*> getCurrentCharacter();
-
-	void update(float dt) override;
-
 	sf::Texture* getRandomTextureFromkey(categories);
 
 

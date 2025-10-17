@@ -8,13 +8,12 @@ void Clickable::update(float dt)
 	if (!game_object->isActive() || collider == nullptr)
 		return;
 
-	sf::Vector2i mousePos =
-		sf::Mouse::getPosition(*GameSystem::get()->getWindow());
+	sf::Vector2f mouse_pos = getMousePos();
 
-	bool isHovering = checkPointCol(collider->getCollider(), mousePos);
-	bool isPressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+	is_hovering = checkPointCol(collider->getCollider(), mouse_pos);
+	is_mouse_pressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 	// Hover enter
-	if (isHovering && !wasHovered)
+	if (is_hovering && !was_hovered)
 	{
 		for (auto* comp : game_object->getAllComponents())
 		{
@@ -26,7 +25,7 @@ void Clickable::update(float dt)
 	}
 
 	// Hover exit
-	if (!isHovering && wasHovered)
+	if (!is_hovering && was_hovered)
 	{
 		for (auto* comp : game_object->getAllComponents())
 		{
@@ -37,10 +36,8 @@ void Clickable::update(float dt)
 		}
 	}
 
-	wasHovered = isHovering;
-
 	// Click
-	if (isHovering && isPressed && !wasPressed)
+	if (is_hovering && is_mouse_pressed && !was_mouse_pressed)
 	{
 		for (auto* comp : game_object->getAllComponents())
 		{
@@ -52,7 +49,7 @@ void Clickable::update(float dt)
 	}
 
 	// Release
-	if (wasPressed && !isPressed && isHovering)
+	if (was_mouse_pressed && !is_mouse_pressed && is_hovering)
 	{
 		for (auto* comp : game_object->getAllComponents())
 		{
@@ -62,13 +59,25 @@ void Clickable::update(float dt)
 			}
 		}
 	}
-
-	wasPressed = isPressed;
 }
 
-bool Clickable::checkPointCol(sf::FloatRect bounds, sf::Vector2i _pos)
+void Clickable::lateUpdate(float dt)
+{
+	// update on late update so childeren can actually check if it was just pressed on this frame.
+	was_hovered = is_hovering;
+	was_mouse_pressed = is_mouse_pressed;
+}
+
+bool Clickable::checkPointCol(sf::FloatRect bounds, sf::Vector2f _pos)
 {
 	return (
 		bounds.left <= _pos.x && _pos.x <= bounds.left + bounds.width &&
 		bounds.top <= _pos.y && _pos.y <= bounds.top + bounds.height);
+}
+
+sf::Vector2f Clickable::getMousePos()
+{
+	sf::RenderWindow* window = GameSystem::get()->getWindow();
+	return window->mapPixelToCoords(sf::Mouse::getPosition(*window));
+
 }

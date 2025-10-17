@@ -86,7 +86,7 @@ public:
 			if (auto casted = dynamic_cast<T*>(comp))
 				return true;
 		}
-		false;
+		return false;
 	}
 
 	// attatch a script to the gameObject

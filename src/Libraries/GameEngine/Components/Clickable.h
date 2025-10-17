@@ -13,9 +13,13 @@ class Clickable : public IComponent
 {
 public:
 	void update(float dt) override;
+	void lateUpdate(float dt) override;
 
-private:
-	bool wasHovered;
-	bool wasPressed;
-	bool checkPointCol(sf::FloatRect bounds, sf::Vector2i _pos);
+protected:
+	bool was_hovered;
+	bool was_mouse_pressed;
+	bool is_hovering;
+	bool is_mouse_pressed;
+	bool checkPointCol(sf::FloatRect bounds, sf::Vector2f _pos);
+	sf::Vector2f getMousePos();
 };
