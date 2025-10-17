@@ -6,8 +6,8 @@ class S_AcceptDeny : public ScriptableBehaviour {
 public:
 	// set stamp state
 	enum State {
-		ACCEPT,
 		DENY,
+		ACCEPT,
 		CLEAR
 	};
 

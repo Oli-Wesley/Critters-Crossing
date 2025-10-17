@@ -153,6 +153,7 @@ std::vector<IComponent*> GameObject::getAllComponents()
 	return components;
 }
 
+// returns all children, including childeren of childeren. 
 std::vector<GameObject*> GameObject::getAllChilderen()
 {
 	std::vector<GameObject*> result;
@@ -174,11 +175,13 @@ Transform* GameObject::getTransform()
 	return &transform;
 }
 
+// returns all children attatched to the gameObject
 std::vector<GameObject*> GameObject::getChilderen()
 {
 	return childeren;
 }
 
+// gets the first child with the name specified
 GameObject* GameObject::getChildByName(std::string name)
 {
 	for (GameObject* child : childeren) {

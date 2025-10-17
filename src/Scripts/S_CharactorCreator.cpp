@@ -1,6 +1,5 @@
 #include "S_CharactorCreator.h"
 #include "../Libraries/GameEngine.h"
-#include <iostream>
 
 void S_CharactorCreator::start()
 {
@@ -128,7 +127,7 @@ void S_CharactorCreator::createCharacter()
 	eyes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Eyes));
 }
 
-// returns true if notable changes have been made. (should be just under 50% of the time)
+// returns false if notable changes have been made (wont be accepted). (should be just under 50% of the time)
 bool S_CharactorCreator::createSimilarCharacter()
 {
 	// always change hats and clothes (the actual challenge)
@@ -161,15 +160,20 @@ bool S_CharactorCreator::createSimilarCharacter()
 	// if I had thought about my code before coding theres probably a better way to do all of this, but oh well. 
 	// might come back and re-write later, but it works perfectly (i hope) code is just ugly
 	if (old_character.eyes != current_character.eyes)
-		return true;
+		return 0;
 	else if (old_character.facial_hair != current_character.facial_hair)
-		return true;
+		return 0;
 	else if (old_character.hair != current_character.hair)
-		return true;
+		return 0;
 	else if (old_character.person != current_character.person)
-		return true;
+		return 0;
 
-	return false; // nothing changed 
+	return 1; // would be similar to accept 
+}
+
+std::vector<GameObject*> S_CharactorCreator::getCurrentCharacter()
+{
+	return game_object->getChilderen();
 }
 
 
@@ -180,11 +184,11 @@ void S_CharactorCreator::update(float dt)
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
 		{
 			createCharacter();
-			recreate_cooldown = 1;
+			recreate_cooldown = 0.1f;
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
 			std::cout << createSimilarCharacter() << "\n";
-			recreate_cooldown = 1;
+			recreate_cooldown = 0.1f;
 		}
 	}
 	else

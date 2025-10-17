@@ -2,6 +2,7 @@
 
 #include "Scripts/S_CharactorCreator.h"
 #include "Scripts/S_AcceptDeny.h"
+#include "Scripts/S_Passport.h"
 
 class testScene : public Scene {
 public:
@@ -14,7 +15,12 @@ public:
 		// call the create character script on the charactor creator. 
 		test->getComponent<S_CharactorCreator>()->createCharacter();
 
-		// getChild from passport, then get the accept/deny script, then set the state of the passport. (temporary for testing).
-		passport->getChildByName("passport_accept_deny")->getComponent<S_AcceptDeny>()->setState(S_AcceptDeny::State::ACCEPT);
+		// give the passport the current character, then generate a similar one (generating similar one returns bool, true if the character is notably different)
+		passport->getComponent<S_Passport>()->placeCharacter(test->getComponent<S_CharactorCreator>()->getCurrentCharacter());
+		passport->getComponent<S_Passport>()->setIsAccepted(test->getComponent<S_CharactorCreator>()->createSimilarCharacter());
+
+		// set passport state to the correct answer for testing. 
+		passport->getChildByName("passport_accept_deny")->getComponent<S_AcceptDeny>()->setState(S_AcceptDeny::State(passport->getComponent<S_Passport>()->getIsAccepted()));
+		std::cout << passport->getComponent<S_Passport>()->getIsAccepted();
 	}
 };
