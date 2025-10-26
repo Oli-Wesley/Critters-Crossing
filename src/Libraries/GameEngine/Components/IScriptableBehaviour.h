@@ -29,6 +29,7 @@ public:
 			if (auto casted = dynamic_cast<T*>(script))
 				return casted;
 		}
+		return nullptr;
 	}
 
 	// reuturns all scripts (probably useless)

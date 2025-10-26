@@ -18,7 +18,7 @@ private:
 		Eyes
 	};
 
-	struct currentCharacter{
+	struct currentCharacter {
 		int person = -1;
 		int clothes = -1;
 		int hair = -1;
@@ -31,12 +31,11 @@ private:
 public:
 	void start() override;
 
-	void createCharacter(); 
+	void createCharacter();
 	bool createSimilarCharacter(); // returns true if changed enough to be a different person (in which case they must be denied). 
 
 	std::vector<GameObject*> getCurrentCharacter();
 	sf::Texture* getRandomTextureFromkey(categories);
-
 
 private:
 	GameObject* person_obj = nullptr;
@@ -53,8 +52,5 @@ private:
 	std::map<categories, std::vector<std::pair<sf::Texture*, float>>> asset_database;
 
 	float change_distinct_features = 0.5;
-
-	float recreate_cooldown = 0;
-
 	bool addTextureToMap(categories map_key, std::string texture_path, float spawn_probability);
 };

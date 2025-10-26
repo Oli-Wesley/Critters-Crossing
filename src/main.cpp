@@ -15,7 +15,7 @@ int main() {
 	sys->setFramerate(120);
 	sys->setTitle("Critters Crossing");
 	sys->setResolution(960, 540);
-	// sys->setDebug(true); // debug 
+	sys->setDebug(1); // debug 
 
 	// start game (anything after this in main will not be called untill the game is stopped).
 	sys->start("test");

@@ -5,3 +5,4 @@
 #include "P_RenderableObject.h"
 #include "P_Passport.h"
 #include "P_Stamp.h"
+#include "P_TriggerVolume.h"

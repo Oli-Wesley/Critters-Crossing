@@ -66,11 +66,10 @@ void BoxCollider::render(sf::RenderWindow* window)
 				rect.setOutlineColor(sf::Color::Red);
 		}
 		else
-		{
 			rect.setOutlineColor(sf::Color::Green);
-		}
 
 		rect.setOutlineThickness(-2);
+		rect.setFillColor(sf::Color(255, 0, 255, 32));
 		window->draw(rect);
 	}
 }

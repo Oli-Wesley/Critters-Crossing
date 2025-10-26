@@ -14,6 +14,10 @@ public:
 	void setIsAccepted(bool _is_accepted);
 	bool getIsAccepted();
 
+	// 0 = deny, 1 = accept, 2 = clear
+	void stamp(int state);
+	int getStampState();
+
 private:
 	bool is_accepted = false;
 	GameObject* character_placement = nullptr;

@@ -80,5 +80,9 @@ REGISTER_PREFAB(
 
 		game_object->addScript<S_Passport>();
 
+		GameObject* trigger_vol = game_object->addChild(pref->InstantiatePrefab("P_TriggerVolume", 12, 13));
+		trigger_vol->setName("Passport Trigger");
+		trigger_vol->getComponent<BoxCollider>()->setSize(66, 33);
+
 		return game_object;
 	});

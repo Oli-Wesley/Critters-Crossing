@@ -26,3 +26,13 @@ bool S_Passport::getIsAccepted()
 {
 	return is_accepted;
 }
+
+void S_Passport::stamp(int state)
+{
+	accept_deny_script->setState(S_AcceptDeny::State(state));
+}
+
+int S_Passport::getStampState()
+{
+	return accept_deny_script->getState();
+}
