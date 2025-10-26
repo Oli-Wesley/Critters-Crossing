@@ -17,4 +17,5 @@ private:
 	
 	int is_green_stamp = -1;
 	S_Passport* passport_script = nullptr;
+	sf::Vector2f start_pos;
 };

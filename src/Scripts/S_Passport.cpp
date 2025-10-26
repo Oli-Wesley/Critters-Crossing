@@ -30,6 +30,11 @@ bool S_Passport::getIsAccepted()
 void S_Passport::stamp(int state)
 {
 	accept_deny_script->setState(S_AcceptDeny::State(state));
+	// check if the stamp is correct
+	if (is_accepted == state)
+		is_current_stamp_correct = 1;
+	else
+		is_current_stamp_correct = 0;
 }
 
 int S_Passport::getStampState()

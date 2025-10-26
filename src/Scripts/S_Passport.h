@@ -20,6 +20,7 @@ public:
 
 private:
 	bool is_accepted = false;
+	bool is_current_stamp_correct = false;
 	GameObject* character_placement = nullptr;
 	S_AcceptDeny* accept_deny_script = nullptr;
 };
