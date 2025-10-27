@@ -8,7 +8,7 @@ REGISTER_PREFAB(
 	{
 		GameObject* game_object = new GameObject("stamp_none");
 		game_object->getTransform()->setLocalScale(3);
-		game_object->getTransform()->setLocalZheight(3);
+		game_object->getTransform()->setLocalZheight(10);
 
 		// give/setup components
 		game_object->addComponent<Draggable>();

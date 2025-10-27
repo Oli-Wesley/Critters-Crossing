@@ -15,6 +15,9 @@ public:
 	void update(float dt) override;
 	void lateUpdate(float dt) override;
 
+	bool isClicked();
+	bool isHovered();
+
 protected:
 	bool was_hovered;
 	bool was_mouse_pressed;

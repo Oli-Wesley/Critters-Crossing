@@ -12,6 +12,7 @@ REGISTER_PREFAB(
 		PrefabRegistry* pref = PrefabRegistry::get();
 		GameObject* game_object = new GameObject("Passport");
 		game_object->getTransform()->setLocalScale(3);
+		game_object->getTransform()->setLocalZheight(3);
 
 		GameObject* passport_background = game_object->addChild(pref->InstantiatePrefab("P_RenderableObject"));
 		GameObject* passport_foreground = game_object->addChild(pref->InstantiatePrefab("P_RenderableObject"));

@@ -61,5 +61,5 @@ private:
 	bool addTextureToMap(categories map_key, std::string texture_path, float spawn_probability);
 
 	sf::Vector2f target_pos = sf::Vector2f(25, 25);
-	float movement_speed = 100;
+	float movement_speed = 150;
 };

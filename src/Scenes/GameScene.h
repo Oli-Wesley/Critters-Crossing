@@ -22,6 +22,7 @@ public:
 		GameObject* green_stamp = scene_root->addChild(pref->InstantiatePrefab("P_Stamp", 650, 265));
 		GameObject* red_stamp = scene_root->addChild(pref->InstantiatePrefab("P_Stamp", 650, 370));
 		GameObject* stamp_tray = scene_root->addChild(pref->InstantiatePrefab("P_RenderableObject", 635, 250));
+		GameObject* next_button = scene_root->addChild(pref->InstantiatePrefab("P_RenderableObject", 25, 400));
 		scene_root->addChild(pref->InstantiatePrefab("P_CharacterFrame")); // doesnt need to be saved as unused anywhere else.
 
 		red_stamp->getComponent<Texture>()->setTexture("../Data/Images/Pixelartimages/Stamp_red.png");
@@ -37,8 +38,14 @@ public:
 		stamp_tray->getComponent<Texture>()->setTexture("../Data/Images/Pixelartimages/StampTray.png");
 		stamp_tray->getTransform()->setLocalScale(3);
 
-
 		// setup the passport.
 		s_gameSceneScript->setupPassport();
+
+		next_button->setName("Next_Button");
+		next_button->getTransform()->setLocalZheight(3);
+		next_button->getTransform()->setLocalScale(8);
+		next_button->addComponent<Clickable>();
+		next_button->addComponent<BoxCollider>(32, 16);
+		next_button->getComponent<Texture>()->setTexture("../Data/Images/Pixelartimages/NextButton.png");
 	}
 };

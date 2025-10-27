@@ -68,6 +68,16 @@ void Clickable::lateUpdate(float dt)
 	was_mouse_pressed = is_mouse_pressed;
 }
 
+bool Clickable::isClicked()
+{
+	return (is_hovering && is_mouse_pressed);
+}
+
+bool Clickable::isHovered()
+{
+	return is_hovering;
+}
+
 bool Clickable::checkPointCol(sf::FloatRect bounds, sf::Vector2f _pos)
 {
 	return (
