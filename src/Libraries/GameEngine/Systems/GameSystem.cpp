@@ -166,9 +166,9 @@ void GameSystem::lateUpdate(float dt)
 
 void GameSystem::render()
 {
-	window->clear(sf::Color::White);
 	if (currentScene != nullptr)
 	{
+		window->clear(currentScene->get_scene_color());
 		std::vector<IRenderable*> renderables = currentScene->scene_root->render();
 		// simple bubble sort, sort the list based on layer. (kinda slow but its fast enough for this..)
 		bool changed = 1;
@@ -197,6 +197,8 @@ void GameSystem::render()
 			var->render(window);
 		}
 	}
+	else
+		window->clear(sf::Color::White); // still clear screen to white if the scene is nullptr
 	window->display();
 }
 

@@ -13,6 +13,7 @@ public:
 	void placeCharacter(std::vector<GameObject*> objects);
 	void setIsAccepted(bool _is_accepted);
 	bool getIsAccepted();
+	bool isCorrect() { return is_current_stamp_correct; };
 
 	// 0 = deny, 1 = accept, 2 = clear
 	void stamp(int state);

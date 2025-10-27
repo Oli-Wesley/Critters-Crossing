@@ -77,7 +77,7 @@ void GameObject::lateUpdate(float dt)
 std::vector<IRenderable*> GameObject::render()
 {
 	std::vector<IRenderable*> result;
-	if (is_active) {
+	if (is_drawn) {
 		for (auto& comp : components) {
 			IRenderable* renderable = dynamic_cast<IRenderable*>(comp);
 			if (renderable) {
@@ -146,6 +146,16 @@ void GameObject::setActive(bool val)
 			}
 		}
 	}
+}
+
+bool GameObject::isDrawn()
+{
+	return is_drawn;
+}
+
+void GameObject::setDrawn(bool val)
+{
+	is_drawn = val;
 }
 
 std::vector<IComponent*> GameObject::getAllComponents()

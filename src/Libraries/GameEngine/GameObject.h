@@ -120,6 +120,9 @@ public:
 
 	bool isActive();
 	void setActive(bool);
+
+	bool isDrawn();
+	void setDrawn(bool);
 	std::vector<IComponent*> getAllComponents();
 
 	// get all children (including childeren of childeren)
@@ -138,6 +141,7 @@ protected:
 	std::string name;
 	std::vector<IComponent*> components;
 	bool is_active = true;
+	bool is_drawn = true;
 	std::vector<GameObject*> childeren;
 	Transform transform;
 	GameObject* parent = nullptr;

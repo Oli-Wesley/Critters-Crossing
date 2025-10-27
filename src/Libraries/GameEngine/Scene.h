@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <SFML/Graphics/Color.hpp>
 // prototype gameObject so it is happy at compile time.
 class GameObject;
 
@@ -18,7 +18,11 @@ public:
 
 	virtual void load(GameObject* dont_destroy);
 
+	sf::Color get_scene_color() { return scene_background_color; };
+
 protected:
 	virtual void load() = 0; // Every scene needs a load function.
 	virtual void onUnload() {};
+
+	sf::Color scene_background_color = sf::Color(255,255,255);
 };

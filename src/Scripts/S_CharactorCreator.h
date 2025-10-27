@@ -30,6 +30,10 @@ private:
 
 public:
 	void start() override;
+	void update(float dt) override;
+
+	void setTargetPos(int x_pos);
+	void setMovementSpeed(float speed);
 
 	void createCharacter();
 	bool createSimilarCharacter(); // returns true if changed enough to be a different person (in which case they must be denied). 
@@ -37,6 +41,8 @@ public:
 	std::vector<GameObject*> getCurrentCharacter();
 	sf::Texture* getRandomTextureFromkey(categories);
 
+	bool in_target_pos = 0;
+	bool in_frame_pos = 0;
 private:
 	GameObject* person_obj = nullptr;
 	GameObject* clothes_obj = nullptr;
@@ -53,4 +59,7 @@ private:
 
 	float change_distinct_features = 0.5;
 	bool addTextureToMap(categories map_key, std::string texture_path, float spawn_probability);
+
+	sf::Vector2f target_pos = sf::Vector2f(25, 25);
+	float movement_speed = 100;
 };

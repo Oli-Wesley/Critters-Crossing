@@ -65,46 +65,81 @@ void S_CharactorCreator::start()
 
 	PrefabRegistry* pref = PrefabRegistry::get();
 	//person object.
-	person_obj = pref->InstantiatePrefab("P_Renderable_Object");
+	person_obj = pref->InstantiatePrefab("P_RenderableObject");
 	game_object->addChild(person_obj);
 	person_obj->setName("person");
 	person_obj->getTransform()->setLocalZheight(1);
 
 	//clothes object.
-	clothes_obj = pref->InstantiatePrefab("P_Renderable_Object");
+	clothes_obj = pref->InstantiatePrefab("P_RenderableObject");
 	game_object->addChild(clothes_obj);
 	clothes_obj->setName("clothes");
 	clothes_obj->getTransform()->setLocalZheight(1.1);
 
 	//hair object.
-	hair_obj = pref->InstantiatePrefab("P_Renderable_Object");
+	hair_obj = pref->InstantiatePrefab("P_RenderableObject");
 	game_object->addChild(hair_obj);
 	hair_obj->setName("hair");
 	hair_obj->getTransform()->setLocalZheight(1.5);
 
 	//facial_hair object.
-	facial_hair_obj = pref->InstantiatePrefab("P_Renderable_Object");
+	facial_hair_obj = pref->InstantiatePrefab("P_RenderableObject");
 	game_object->addChild(facial_hair_obj);
 	facial_hair_obj->setName("facial_hair");
 	facial_hair_obj->getTransform()->setLocalZheight(1.2);
 
 	//hats object.
-	hats_obj = pref->InstantiatePrefab("P_Renderable_Object");
+	hats_obj = pref->InstantiatePrefab("P_RenderableObject");
 	game_object->addChild(hats_obj);
 	hats_obj->setName("hat");
 	hats_obj->getTransform()->setLocalZheight(1.6);
 
 	//extras object.
-	extras_obj = pref->InstantiatePrefab("P_Renderable_Object");
+	extras_obj = pref->InstantiatePrefab("P_RenderableObject");
 	game_object->addChild(extras_obj);
 	extras_obj->setName("extras");
 	extras_obj->getTransform()->setLocalZheight(1.4);
 
 	//eyes object. 
-	eyes_obj = pref->InstantiatePrefab("P_Renderable_Object");
+	eyes_obj = pref->InstantiatePrefab("P_RenderableObject");
 	game_object->addChild(eyes_obj);
 	eyes_obj->setName("eyes");
 	eyes_obj->getTransform()->setLocalZheight(1.3);
+}
+
+void S_CharactorCreator::update(float dt)
+{
+	Transform* trans = game_object->getTransform();
+	in_target_pos = 0;
+	in_frame_pos = 0;
+	// if close, set position to actual pos
+	if ((trans->getLocalPosition() == target_pos) || (abs(trans->getLocalPosition().x - target_pos.x) < 3)) {
+		trans->setLocalPosition(target_pos);
+		in_target_pos = 1;
+		if (target_pos.x == 25)
+			in_frame_pos = 1;
+	}
+	if (trans->getLocalPosition().x < target_pos.x)
+	{
+		trans->move(movement_speed * dt, 0);
+		
+	}
+	else if (trans->getLocalPosition().x > target_pos.x)
+	{
+		trans->move(-movement_speed * dt, 0);
+	}
+}
+
+// sets the target pos to move towards
+void S_CharactorCreator::setTargetPos(int x_pos)
+{
+	target_pos = sf::Vector2f(x_pos, game_object->getTransform()->getLocalPosition().y);
+	in_target_pos = 0;
+}
+
+void S_CharactorCreator::setMovementSpeed(float speed)
+{
+	movement_speed = speed;
 }
 
 // actually create the character.

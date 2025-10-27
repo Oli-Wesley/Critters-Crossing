@@ -35,6 +35,7 @@ void S_Passport::stamp(int state)
 		is_current_stamp_correct = 1;
 	else
 		is_current_stamp_correct = 0;
+	// std::cout << is_current_stamp_correct << "\n";
 }
 
 int S_Passport::getStampState()

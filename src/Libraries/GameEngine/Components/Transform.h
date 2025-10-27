@@ -31,9 +31,12 @@ public:
 
 
 	// Scale
+	// if only given 1 value, assume uniform scaling
+	void setGlobalScale(float _s);
 	void setGlobalScale(float _s_x, float _s_y);
 	void setGlobalScale(sf::Vector2f _scale);
 
+	void setLocalScale(float _s);
 	void setLocalScale(float _s_x, float _s_y);
 	void setLocalScale(sf::Vector2f _scale);
 

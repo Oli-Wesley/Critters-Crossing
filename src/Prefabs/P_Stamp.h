@@ -7,7 +7,7 @@ REGISTER_PREFAB(
 	[]() -> GameObject* // lambda construction func
 	{
 		GameObject* game_object = new GameObject("stamp_none");
-		game_object->getTransform()->setLocalScale(4,4);
+		game_object->getTransform()->setLocalScale(3);
 		game_object->getTransform()->setLocalZheight(3);
 
 		// give/setup components
