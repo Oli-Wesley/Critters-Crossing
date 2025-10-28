@@ -121,6 +121,9 @@ void S_CharactorCreator::update(float dt)
 	{
 		trans->move(-movement_speed * dt, 0);
 	}
+
+	// some goofy stuff to animate the character bobbing up and down 
+	trans->setLocalPosition(trans->getGlobalPosition().x, 25 + (abs(sin(((trans->getGlobalPosition().x - 25) / 25)) * 10)));
 }
 
 // sets the target pos to move towards
@@ -167,7 +170,7 @@ bool S_CharactorCreator::createSimilarCharacter()
 
 	int changable_object_count = 4; 
 	currentCharacter old_character = current_character;
-	int fallback_count = changable_object_count; // fallback count so it cant run forever if it gets extremely lucky 
+	int fallback_count = changable_object_count*2; // fallback count so it cant run forever if it gets extremely lucky 
 
 	// 50% chance to change 1 thing, 50% after that to change a second ect...
 	while (((double)rand()) / RAND_MAX < change_distinct_features && fallback_count > 0) {

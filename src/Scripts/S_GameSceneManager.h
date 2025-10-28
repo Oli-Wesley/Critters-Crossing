@@ -2,6 +2,7 @@
 #include "../Libraries/GameEngine/ScriptableBehaviour.h" 
 #include "S_CharactorCreator.h"
 #include "S_Passport.h"
+#include "S_LampManager.h"
 #include "../Libraries/GameEngine/Components/Clickable.h"
 #include <SFML/Graphics.hpp>
 
@@ -11,13 +12,18 @@ public:
 	void update(float dt) override;
 	void setupPassport();
 	void checkResult();
+	void gameOver();
 
 	
 private:
 	S_CharactorCreator* s_character_creator = nullptr;
 	S_Passport* s_passport = nullptr;
+	S_LampManager* s_lamp_manager = nullptr;
 	GameObject* obj_passport = nullptr;
 	Clickable* c_next_button = nullptr;
 	GameObject* obj_character_creator = nullptr;
+
+	int incorrect_count = 0;
+	int correct_count = 0;
 
 };

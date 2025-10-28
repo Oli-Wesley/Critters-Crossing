@@ -18,15 +18,21 @@ void S_GameSceneManager::update(float dt)
 		s_character_creator = obj_character_creator->getComponent<S_CharactorCreator>();
 		c_next_button = game_object->getChildByName("Next_Button")->getComponent<Clickable>();
 	}
-	
 
+	// when character is in the frame position. 
 	if (s_character_creator->in_frame_pos) {
 		obj_passport->setDrawn(1);
 	}
+
+	// when character reaches target position off screen. 
 	if (!s_character_creator->in_frame_pos && s_character_creator->in_target_pos) {
 		setupPassport();
+		s_lamp_manager->setActivatedCount(incorrect_count);
+		if (incorrect_count >= 3)
+			gameOver();
 	}
 
+	// when button to proceed is hit.
 	if (c_next_button->isClicked()) {
 		checkResult();
 	}
@@ -56,8 +62,8 @@ void S_GameSceneManager::checkResult()
 {
 	if (s_passport->getStampState() != 2) // if has been stamped
 	{
-		// hide passport, 
-		// obj_passport->setDrawn(0);
+		if (s_lamp_manager == nullptr)
+			s_lamp_manager = game_object->getChildByName("Lamp_Manager")->getComponent<S_LampManager>();
 
 		// send person in direction of stamp regardless of if it was correct or not.
 		if (s_passport->getStampState())
@@ -69,16 +75,20 @@ void S_GameSceneManager::checkResult()
 			s_character_creator->setTargetPos(-250);
 		}
 
-		// TODO: stuff if its incorrect (score/remove lives/something idk)
 		if (s_passport->isCorrect())
 		{
-			std::cout << "CORRECT \n";
+			correct_count++;
 		}
 		else {
-			std::cout << "INCORRECT \n";
+			incorrect_count++;
 		}
 
 		s_passport->stamp(2); // clear passport
 		obj_passport->setDrawn(0);
 	}
+}
+
+void S_GameSceneManager::gameOver()
+{
+	std::cout << "GAME OVER\n Amount Correct: " << correct_count << std::endl;
 }

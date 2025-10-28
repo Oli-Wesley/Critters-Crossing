@@ -7,7 +7,7 @@ REGISTER_PREFAB(
 	[]() -> GameObject* // lambda construction func
 	{
 		GameObject* game_object = new GameObject("stamp_none");
-		game_object->getTransform()->setLocalScale(3);
+		game_object->getTransform()->setLocalScale(2.5);
 		game_object->getTransform()->setLocalZheight(10);
 
 		// give/setup components
@@ -15,7 +15,7 @@ REGISTER_PREFAB(
 		game_object->addComponent<Texture>();
 		game_object->addComponent<RigidBody>()->is_static = true;
 		game_object->addComponent<SpriteRenderer>(); 
-		game_object->addComponent<BoxCollider>(60, 26);
+		game_object->addComponent<BoxCollider>(68, 28);
 		game_object->addScript<S_Stamp>();
 
 		game_object->getComponent<Texture>()->setTexture("../Data/Images/Pixelartimages/Stamp_green.png");

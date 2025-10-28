@@ -8,9 +8,7 @@ int main() {
 	srand(time(0)); // setup random numbers
 	// Add Scenes
 	GameSystem* sys = GameSystem::get();
-	sys->addScene(new GameScene, "GameScene");
-
-
+	sys->addScene(new GameScene, "GameScene"); 
 	// set window settings (not needed, there are default values)
 	sys->setFramerate(120);
 	sys->setTitle("Critters Crossing");
