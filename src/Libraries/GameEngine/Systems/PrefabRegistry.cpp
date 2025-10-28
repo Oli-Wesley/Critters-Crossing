@@ -41,3 +41,25 @@ PrefabRegistry::InstantiatePrefab(std::string name, float x, float y)
 {
 	return InstantiatePrefab(name, sf::Vector2f(x, y));
 }
+
+GameObject* PrefabRegistry::InstantiatePrefab(std::string name, std::string new_name)
+{
+	GameObject* obj= InstantiatePrefab(name);
+	obj->setName(new_name);
+	return obj;
+}
+
+
+GameObject* PrefabRegistry::InstantiatePrefab(std::string name, std::string new_name, sf::Vector2f position)
+{
+	GameObject* obj = InstantiatePrefab(name, position);
+	obj->setName(new_name);
+	return obj;
+}
+
+GameObject* PrefabRegistry::InstantiatePrefab(std::string name, std::string new_name, float x, float y)
+{
+	GameObject* obj = InstantiatePrefab(name, sf::Vector2f(x,y));
+	obj->setName(new_name);
+	return obj;
+}

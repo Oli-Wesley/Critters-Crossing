@@ -65,45 +65,38 @@ void S_CharactorCreator::start()
 
 	PrefabRegistry* pref = PrefabRegistry::get();
 	//person object.
-	person_obj = pref->InstantiatePrefab("P_RenderableObject");
+	person_obj = pref->InstantiatePrefab("P_RenderableObject", "person");
 	game_object->addChild(person_obj);
-	person_obj->setName("person");
 	person_obj->getTransform()->setLocalZheight(1);
 
 	//clothes object.
-	clothes_obj = pref->InstantiatePrefab("P_RenderableObject");
+	clothes_obj = pref->InstantiatePrefab("P_RenderableObject", "clothes");
 	game_object->addChild(clothes_obj);
-	clothes_obj->setName("clothes");
 	clothes_obj->getTransform()->setLocalZheight(1.1);
 
 	//hair object.
-	hair_obj = pref->InstantiatePrefab("P_RenderableObject");
+	hair_obj = pref->InstantiatePrefab("P_RenderableObject", "hair");
 	game_object->addChild(hair_obj);
-	hair_obj->setName("hair");
 	hair_obj->getTransform()->setLocalZheight(1.5);
 
 	//facial_hair object.
-	facial_hair_obj = pref->InstantiatePrefab("P_RenderableObject");
+	facial_hair_obj = pref->InstantiatePrefab("P_RenderableObject", "facial_hair");
 	game_object->addChild(facial_hair_obj);
-	facial_hair_obj->setName("facial_hair");
 	facial_hair_obj->getTransform()->setLocalZheight(1.2);
 
 	//hats object.
-	hats_obj = pref->InstantiatePrefab("P_RenderableObject");
+	hats_obj = pref->InstantiatePrefab("P_RenderableObject", "hat");
 	game_object->addChild(hats_obj);
-	hats_obj->setName("hat");
 	hats_obj->getTransform()->setLocalZheight(1.6);
 
 	//extras object.
-	extras_obj = pref->InstantiatePrefab("P_RenderableObject");
+	extras_obj = pref->InstantiatePrefab("P_RenderableObject", "extras");
 	game_object->addChild(extras_obj);
-	extras_obj->setName("extras");
 	extras_obj->getTransform()->setLocalZheight(1.4);
 
 	//eyes object. 
-	eyes_obj = pref->InstantiatePrefab("P_RenderableObject");
+	eyes_obj = pref->InstantiatePrefab("P_RenderableObject", "eyes");
 	game_object->addChild(eyes_obj);
-	eyes_obj->setName("eyes");
 	eyes_obj->getTransform()->setLocalZheight(1.3);
 }
 

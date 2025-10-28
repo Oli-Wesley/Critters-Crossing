@@ -11,8 +11,8 @@ REGISTER_PREFAB(
 		GameObject* game_object = new GameObject("CharacterFrame");
 		game_object->getTransform()->setLocalScale(5);
 
-		game_object->addChild(pref->InstantiatePrefab("P_RenderableObject"))->getComponent<Texture>()->setTexture("../Data/Images/Pixelartimages/Frame_Background.png");
-		GameObject* foreground = game_object->addChild(pref->InstantiatePrefab("P_RenderableObject"));
+		game_object->addChild(pref->InstantiatePrefab("P_RenderableObject", "background"))->getComponent<Texture>()->setTexture("../Data/Images/Pixelartimages/Frame_Background.png");
+		GameObject* foreground = game_object->addChild(pref->InstantiatePrefab("P_RenderableObject", "foreground"));
 		foreground->getComponent<Texture>()->setTexture("../Data/Images/Pixelartimages/Frame_Foreground.png");
 		foreground->getTransform()->setLocalZheight(2.9); // just under the stamps
 

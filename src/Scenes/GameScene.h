@@ -12,22 +12,20 @@ public:
 		// set background colour
 		scene_background_color = sf::Color(69, 40, 40);
 		S_GameSceneManager* s_gameSceneScript = scene_root->addScript<S_GameSceneManager>();
-		
+
 		// load objects from prefab, add them as a child to the scene root, and save their reference 
 		PrefabRegistry* pref = PrefabRegistry::get();
 		GameObject* character_creator = scene_root->addChild(pref->InstantiatePrefab("P_CharacterCreator", 25, 25));
 
 		GameObject* passport = scene_root->addChild(pref->InstantiatePrefab("P_Passport", 310, 160));
 
-		GameObject* green_stamp = scene_root->addChild(pref->InstantiatePrefab("P_Stamp", 650, 265));
-		GameObject* red_stamp = scene_root->addChild(pref->InstantiatePrefab("P_Stamp", 650, 370));
+		GameObject* green_stamp = scene_root->addChild(pref->InstantiatePrefab("P_Stamp", "stamp_green", 650, 265));
+		GameObject* red_stamp = scene_root->addChild(pref->InstantiatePrefab("P_Stamp", "stamp_red", 650, 370));
 		GameObject* stamp_tray = scene_root->addChild(pref->InstantiatePrefab("P_RenderableObject", 635, 250));
-		GameObject* next_button = scene_root->addChild(pref->InstantiatePrefab("P_RenderableObject", 25, 400));
+		GameObject* next_button = scene_root->addChild(pref->InstantiatePrefab("P_RenderableObject", "Next_Button", 25, 400));
 		scene_root->addChild(pref->InstantiatePrefab("P_CharacterFrame")); // doesnt need to be saved as unused anywhere else.
 
 		red_stamp->getComponent<Texture>()->setTexture("../Data/Images/Pixelartimages/Stamp_red.png");
-		red_stamp->setName("stamp_red");
-		green_stamp->setName("stamp_green");
 
 		// give stamp script reference to the passport so it can be stamped.
 		green_stamp->getComponent<S_Stamp>()->givePassportScript(passport->getComponent<S_Passport>());
@@ -41,7 +39,6 @@ public:
 		// setup the passport.
 		s_gameSceneScript->setupPassport();
 
-		next_button->setName("Next_Button");
 		next_button->getTransform()->setLocalZheight(3);
 		next_button->getTransform()->setLocalScale(8);
 		next_button->addComponent<Clickable>();
