@@ -82,7 +82,6 @@ void S_GameSceneManager::checkResult()
 		else {
 			incorrect_count++;
 		}
-
 		s_passport->stamp(2); // clear passport
 		obj_passport->setDrawn(0);
 	}

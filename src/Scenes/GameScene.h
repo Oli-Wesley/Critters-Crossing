@@ -27,6 +27,8 @@ public:
 		scene_root->addChild(pref->InstantiatePrefab("P_CharacterFrame")); // doesnt need to be saved as unused anywhere else.
 		GameObject* lamp_manager = scene_root->addChild(pref->InstantiatePrefab("P_LampManager", 665, 125));
 
+		scene_root->addChild(pref->InstantiatePrefab("P_ElFisho", 718.75, 35));
+
 		red_stamp->getComponent<Texture>()->setTexture("../Data/Images/Pixelartimages/Stamp_red.png");
 
 		// give stamp script reference to the passport so it can be stamped.

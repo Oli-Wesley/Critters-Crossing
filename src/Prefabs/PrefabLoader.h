@@ -9,3 +9,4 @@
 #include "P_CharacterFrame.h"
 #include "P_Lamp.h"
 #include "P_LampManager.h"
+#include "P_ElFisho.h"

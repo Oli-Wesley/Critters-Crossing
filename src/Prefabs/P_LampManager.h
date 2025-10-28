@@ -8,7 +8,7 @@ REGISTER_PREFAB(
 	{
 		PrefabRegistry* pref = PrefabRegistry::get();
 		GameObject* game_object = new GameObject("Lamp_Manager");
-		game_object->getTransform()->setLocalZheight(5);
+		game_object->getTransform()->setLocalZheight(5.1);
 		game_object->getTransform()->setLocalScale(5);
 
 		game_object->addChild(pref->InstantiatePrefab("P_Lamp"));
