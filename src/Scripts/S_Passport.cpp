@@ -11,7 +11,7 @@ void S_Passport::placeCharacter(std::vector<GameObject*> objects)
 {
 	std::vector<GameObject*> childeren = character_placement->getAllChilderen();
 	int count = 0;
-	for (GameObject* object : objects){
+	for (GameObject* object : objects) {
 		childeren[count]->getComponent<Texture>()->setTexture(object->getComponent<Texture>()->getTexture());
 		childeren[count++]->getTransform()->setLocalZheight(object->getTransform()->getLocalZheight());
 	}
@@ -29,13 +29,15 @@ bool S_Passport::getIsAccepted()
 
 void S_Passport::stamp(int state)
 {
-	accept_deny_script->setState(S_AcceptDeny::State(state));
-	// check if the stamp is correct
-	if (is_accepted == state)
-		is_current_stamp_correct = 1;
-	else
-		is_current_stamp_correct = 0;
-	// std::cout << is_current_stamp_correct << "\n";
+	if (game_object->isDrawn()) {
+		accept_deny_script->setState(S_AcceptDeny::State(state));
+		// check if the stamp is correct
+		if (is_accepted == state)
+			is_current_stamp_correct = 1;
+		else
+			is_current_stamp_correct = 0;
+		// std::cout << is_current_stamp_correct << "\n";
+	}
 }
 
 int S_Passport::getStampState()
