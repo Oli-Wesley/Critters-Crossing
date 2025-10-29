@@ -22,6 +22,10 @@ void S_GameSceneManager::update(float dt)
 	// when character is in the frame position. 
 	if (s_character_creator->in_frame_pos) {
 		obj_passport->setDrawn(1);
+		// when button to proceed is hit.
+		if (c_next_button->isClicked()) {
+			checkResult();
+		}
 	}
 
 	// when character reaches target position off screen. 
@@ -30,11 +34,6 @@ void S_GameSceneManager::update(float dt)
 		s_lamp_manager->setActivatedCount(incorrect_count);
 		if (incorrect_count >= 3)
 			gameOver();
-	}
-
-	// when button to proceed is hit.
-	if (c_next_button->isClicked()) {
-		checkResult();
 	}
 }
 
