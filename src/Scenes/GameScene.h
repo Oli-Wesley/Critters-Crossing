@@ -23,9 +23,9 @@ public:
 		GameObject* green_stamp = scene_root->addChild(pref->InstantiatePrefab("P_Stamp", "stamp_green", 605, 325));
 		GameObject* red_stamp = scene_root->addChild(pref->InstantiatePrefab("P_Stamp", "stamp_red", 605, 425));
 		GameObject* stamp_tray = scene_root->addChild(pref->InstantiatePrefab("P_RenderableObject", 590, 310));
-		GameObject* next_button = scene_root->addChild(pref->InstantiatePrefab("P_RenderableObject", "Next_Button", 25, 400));
 		scene_root->addChild(pref->InstantiatePrefab("P_CharacterFrame")); // doesnt need to be saved as unused anywhere else.
 		GameObject* lamp_manager = scene_root->addChild(pref->InstantiatePrefab("P_LampManager", 665, 125));
+		GameObject* desk = scene_root->addChild(pref->InstantiatePrefab("P_Desk", 10, 385));
 
 		scene_root->addChild(pref->InstantiatePrefab("P_ElFisho", 718.75, 35));
 
@@ -43,11 +43,5 @@ public:
 
 		// setup the passport.
 		s_gameSceneScript->setupPassport();
-
-		next_button->getTransform()->setLocalZheight(3);
-		next_button->getTransform()->setLocalScale(8);
-		next_button->addComponent<Clickable>();
-		next_button->addComponent<BoxCollider>(32, 16);
-		next_button->getComponent<Texture>()->setTexture("../Data/Images/Pixelartimages/NextButton.png");
 	}
 };

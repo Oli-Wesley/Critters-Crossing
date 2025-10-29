@@ -10,3 +10,4 @@
 #include "P_Lamp.h"
 #include "P_LampManager.h"
 #include "P_ElFisho.h"
+#include "P_Desk.h"

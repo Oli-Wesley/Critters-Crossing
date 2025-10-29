@@ -16,7 +16,7 @@ void S_GameSceneManager::update(float dt)
 		s_passport = obj_passport->getComponent<S_Passport>();
 		obj_character_creator = game_object->getChildByName("Character_Creator");
 		s_character_creator = obj_character_creator->getComponent<S_CharactorCreator>();
-		c_next_button = game_object->getChildByName("Next_Button")->getComponent<Clickable>();
+		c_next_button = game_object->getChildByName("Desk")->getComponent<Clickable>();
 	}
 
 	// when character is in the frame position. 
