@@ -11,3 +11,4 @@
 #include "P_LampManager.h"
 #include "P_ElFisho.h"
 #include "P_Desk.h"
+#include "P_SceneButton.h"
