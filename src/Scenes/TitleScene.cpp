@@ -8,11 +8,11 @@ void TitleScene::load()
   // background
   GameObject* background = new GameObject("background");
   background->getTransform()->setLocalPosition(0, 0);
-  background->getTransform()->setLocalScale(10, 10);
+  background->getTransform()->setLocalScale(5, 5);
   background->getTransform()->setLocalZheight(-5);
 
   background->addComponent<SpriteRenderer>();
-  background->addComponent<Texture>("../Data/Images/Background.png");
+  background->addComponent<Texture>("../Data/Images/Pixelartimages/Background.png");
   scene_root->addChild(background);
 
   // play button
