@@ -11,9 +11,9 @@ public:
 	static GameSystem* get();
 	void start();
 	void start(std::string start_scene);
-	void addScene(Scene* scene, std::string scene_name);
 	void switchScene(std::string);
-	void Remove(std::string scene_name);
+	void addScene(Scene* scene, std::string scene_name);
+	void removeScene(std::string scene_name);
 	GameObject* findGameObject(std::string _id);
 	void runGameLoop(float dt);
 

@@ -8,6 +8,7 @@ class GameObject;
 
 class S_SceneButton : public ScriptableBehaviour {
 public:
+	// target scene, default texture, hover texture, click texture (paths)
 	S_SceneButton(std::string target_scene, std::string defaulttex, std::string hover, std::string click);
 	void start() override;
 	void update(float dt) override;

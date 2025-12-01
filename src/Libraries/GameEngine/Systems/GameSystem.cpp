@@ -55,7 +55,7 @@ void GameSystem::switchScene(std::string scene_name)
 		<< "'\n";
 }
 
-void GameSystem::Remove(std::string scene_name)
+void GameSystem::removeScene(std::string scene_name)
 {
 	scenes.erase(scene_name);
 }
@@ -68,10 +68,10 @@ GameObject* GameSystem::findGameObject(std::string _id)
 void GameSystem::runGameLoop(float dt)
 {
 	fixedUpdate(dt); // physics called in here aswell.
-	update(dt);
-	lateUpdate(dt);
-	render();
-	changeScene();
+	update(dt); // first update tick
+	lateUpdate(dt); // second update tick 
+	render(); // render everything to screen
+	changeScene(); // change scene (at the end to allow the tick to finish)
 }
 
 void GameSystem::setTitle(std::string _title)
@@ -168,7 +168,7 @@ void GameSystem::render()
 {
 	if (currentScene != nullptr)
 	{
-		window->clear(currentScene->get_scene_color());
+		window->clear(currentScene->getSceneColor());
 		std::vector<IRenderable*> renderables = currentScene->scene_root->render();
 		// simple bubble sort, sort the list based on layer. (kinda slow but its fast enough for this..)
 		bool changed = 1;

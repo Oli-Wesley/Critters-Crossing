@@ -31,8 +31,8 @@ void S_Passport::stamp(int state)
 {
 	if (game_object->isDrawn()) {
 		accept_deny_script->setState(S_AcceptDeny::State(state));
-		// check if the stamp is correct
-		if (is_accepted == state)
+		// check if the stamp is correct (static cast to stop the warnings...)
+		if (is_accepted == static_cast<bool>(state))
 			is_current_stamp_correct = 1;
 		else
 			is_current_stamp_correct = 0;

@@ -26,6 +26,8 @@ set(SOURCE_FILES "src/main.cpp" )  # Sets variable SOURCE_FILES to hold names & 
 set (ALL_FILES  ${LIBRARY_FILES} ${SOURCE_FILES} ${PREFABS} ${SCENES} ${SCRIPTS})
 add_executable(Template ${ALL_FILES})  # Names the application and tells compiler which source files to use
 
+target_link_options(Template PRIVATE "/MANIFEST:NO") # stop failing to build because it expects a manifest that doesnt exist.
+
 target_link_libraries(Template PRIVATE sfml-graphics sfml-window sfml-system sfml-network sfml-audio) # Links the SFML libraries we need to our application
 target_compile_features(Template PRIVATE cxx_std_20)  # Defines which standard of C++ the compiler should use
 

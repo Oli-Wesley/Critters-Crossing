@@ -1,6 +1,7 @@
 #include "S_SceneButton.h"
 #include "../Libraries/GameEngine.h"
 
+// name of the target scene, idle texture, hover texture, and clicktexture (needs all of them given, but they can refer to the same texture).
 S_SceneButton::S_SceneButton(std::string target_scene, std::string defaulttex, std::string hover, std::string click)
 {
 	target = target_scene;

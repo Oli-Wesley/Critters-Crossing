@@ -18,7 +18,7 @@ public:
 
 	virtual void load(GameObject* dont_destroy);
 
-	sf::Color get_scene_color() { return scene_background_color; };
+	sf::Color getSceneColor() { return scene_background_color; };
 
 protected:
 	virtual void load() = 0; // Every scene needs a load function.
