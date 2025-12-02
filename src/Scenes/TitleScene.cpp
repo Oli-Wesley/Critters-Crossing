@@ -19,7 +19,7 @@ void TitleScene::load()
   GameObject* notices = scene_root->addChild(pref->InstantiatePrefab("P_RenderableObject", "Notices"));
   notices->getComponent<Texture>()->setTexture("../Data/Images/Pixelartimages/Notices.png");
   notices->getTransform()->setLocalScale(2.5, 2.5);
-  notices->getTransform()->setLocalPosition(675, 35);
+  notices->getTransform()->setLocalPosition(685, 35);
 
   // play button
   GameObject* play_button = new GameObject("PlayButton");
