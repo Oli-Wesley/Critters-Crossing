@@ -14,13 +14,8 @@ void GameOverScene::load()
   background->getTransform()->setLocalZheight(-5);
 
   background->addComponent<SpriteRenderer>();
-  background->addComponent<Texture>("../Data/Images/Pixelartimages/Title Screen.png");
+  background->addComponent<Texture>("../Data/Images/Pixelartimages/GameOverScreen.png");
   scene_root->addChild(background);
-
-  GameObject* notices = scene_root->addChild(pref->InstantiatePrefab("P_RenderableObject", "Notices"));
-  notices->getComponent<Texture>()->setTexture("../Data/Images/Pixelartimages/Notices.png");
-  notices->getTransform()->setLocalScale(2.5, 2.5);
-  notices->getTransform()->setLocalPosition(685, 35);
 
   // play button
   GameObject* play_button = new GameObject("PlayButton");
@@ -33,6 +28,6 @@ void GameOverScene::load()
   play_button->addScript<S_SceneButton>("GameScene", "../Data/Images/Pixelartimages/Desk_button_wide_Idle.png", "../Data/Images/Pixelartimages/Desk_button_wide_hover.png", "../Data/Images/Pixelartimages/Desk_button_wide_pressed.png");
   scene_root->addChild(play_button);
 
-  std::cout << "TEST GAME OVER:::::  \n";
-  std::cout << GameSystem::get()->getCurrentScene()->dont_destroy->getChildByName("global_data")->getComponent<S_GlobalData>()->score;
+  // get score from global data (used to transfer between scenes)
+  //std::cout << GameSystem::get()->getCurrentScene()->dont_destroy->getChildByName("global_data")->getComponent<S_GlobalData>()->score;
 }

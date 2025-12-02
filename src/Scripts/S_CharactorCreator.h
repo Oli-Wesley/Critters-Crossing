@@ -30,6 +30,7 @@ private:
 
 public:
 	void start() override;
+	void onDestroy() override;
 	void update(float dt) override;
 
 	void setTargetPos(int x_pos);

@@ -33,6 +33,7 @@ void TitleScene::load()
   play_button->addScript<S_SceneButton>("GameScene", "../Data/Images/Pixelartimages/Desk_button_wide_Idle.png", "../Data/Images/Pixelartimages/Desk_button_wide_hover.png", "../Data/Images/Pixelartimages/Desk_button_wide_pressed.png");
   scene_root->addChild(play_button);
 
+  // only create global data the first time the scene is loaded. 
   if (dont_destroy->getChildByName("global_data") == nullptr) {
 	  dont_destroy->addChild(new GameObject("global_data"))->addScript<S_GlobalData>();
   }

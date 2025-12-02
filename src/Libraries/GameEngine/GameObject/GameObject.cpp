@@ -1,6 +1,7 @@
 #include "../GameObject.h"
 #include "../Components/Transform.h"
 #include "../ComponentInterfaces.h"
+#include "../Systems/GameSystem.h"
 
 
 GameObject::GameObject(std::string _name)
@@ -95,18 +96,10 @@ std::vector<IRenderable*> GameObject::render()
 
 void GameObject::destroy()
 {
+	GameSystem::get()->addToDestroyQueue(this);
 	pending_destroy = true;
 }
 
-void GameObject::destroy(bool destroy_children)
-{
-	if (destroy_children)
-		for (GameObject* child : childeren) {
-			child->destroy(true);
-			delete child;
-		}
-	destroy(); // call other function to destroy components.
-}
 
 GameObject* GameObject::addChild(GameObject* _game_ob)
 {

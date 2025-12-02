@@ -125,6 +125,11 @@ sf::RenderWindow* GameSystem::getWindow()
 	return window;
 }
 
+void GameSystem::addToDestroyQueue(GameObject* obj)
+{
+	destroy_queue.push_back(obj);
+}
+
 void GameSystem::runPhysics(float timestep)
 {
 	if (currentScene != nullptr)

@@ -1,5 +1,7 @@
 #include "S_CharactorCreator.h"
 #include "../Libraries/GameEngine.h"
+#include <algorithm>
+#include <random> 
 
 void S_CharactorCreator::start()
 {
@@ -100,6 +102,21 @@ void S_CharactorCreator::start()
 	eyes_obj->getTransform()->setLocalZheight(1.3);
 }
 
+// iterate over map, destroy all textures.
+void S_CharactorCreator::onDestroy()
+{
+	std::map<categories, std::vector<std::pair<sf::Texture*, float>>>::iterator it = asset_database.begin();
+	// Iterating over the map using Iterator till map end.
+	while (it != asset_database.end()) {
+		// Accessing the value
+		std::vector<std::pair<sf::Texture*, float>> val = it->second;
+		for (std::pair<sf::Texture*, float> el : val) {
+			delete el.first;
+		}
+		it++;
+	}
+}
+
 void S_CharactorCreator::update(float dt)
 {
 	Transform* trans = game_object->getTransform();
@@ -158,6 +175,7 @@ void S_CharactorCreator::createCharacter()
 	eyes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Eyes));
 }
 
+// TODO: re-write tf out if this function, it sucks ass.
 // returns false if notable changes have been made (wont be accepted). (should be just under 50% of the time)
 bool S_CharactorCreator::createSimilarCharacter()
 {
@@ -166,40 +184,40 @@ bool S_CharactorCreator::createSimilarCharacter()
 
 	clothes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Clothes));
 
-	// change a distinct feature (person, eyes, beard, hair)
+	
+	// array of objects and their corresponding key
+	std::vector<std::pair<GameObject*, categories>> features = {
+		{ person_obj, Person },
+		{ eyes_obj, Eyes },
+		{ facial_hair_obj, FacialHair },
+		{ hair_obj, Hair }
+	};
 
-	int changable_object_count = 4; 
+	// Keep old character snapshot
 	currentCharacter old_character = current_character;
-	int fallback_count = changable_object_count*2; // fallback count so it cant run forever if it gets extremely lucky 
 
-	// 50% chance to change 1 thing, 50% after that to change a second ect...
-	while (((double)rand()) / RAND_MAX < change_distinct_features && fallback_count > 0) {
-		switch (rand() % changable_object_count) {
-		case 0:
-			person_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Person));
-		case 1:
-			eyes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Eyes));
-		case 2:
-			facial_hair_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(FacialHair));
-		case 3:
-			hair_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Hair));
+	// shuffle the list so a different feature gets changed first each time.
+	std::random_device rd;
+	std::mt19937 g(rd());
+	std::shuffle(features.begin(), features.end(), g);
+	float chance = 0.5;
+	for (std::pair<GameObject*, categories> feature : features) {
+		if (((double)rand() / RAND_MAX) < chance) {
+			feature.first->getComponent<Texture>()->setTexture(getRandomTextureFromkey(feature.second));
+			chance*=0.5;
 		}
-		fallback_count--; // decrement fallback count to limit amount of changes. 
 	}
 
-	// check if the character changed (have to do this way bc choosing a new object could re-generate the same old one. 
-	// if I had thought about my code before coding theres probably a better way to do all of this, but oh well. 
-	// might come back and re-write later, but it works perfectly (i hope) code is just ugly
-	if (old_character.eyes != current_character.eyes)
-		return 0;
-	else if (old_character.facial_hair != current_character.facial_hair)
-		return 0;
-	else if (old_character.hair != current_character.hair)
-		return 0;
-	else if (old_character.person != current_character.person)
-		return 0;
+	// Check if any distinct feature changed
+	if (old_character.person != current_character.person ||
+		old_character.eyes != current_character.eyes ||
+		old_character.facial_hair != current_character.facial_hair ||
+		old_character.hair != current_character.hair)
+	{
+		return false; // notable change 
+	}
 
-	return 1; // would be similar to accept 
+	return true; // similar enough (only clothes/hat changed)
 }
 
 std::vector<GameObject*> S_CharactorCreator::getCurrentCharacter()
@@ -211,15 +229,12 @@ sf::Texture* S_CharactorCreator::getRandomTextureFromkey(categories category)
 {
 	std::vector<std::pair<sf::Texture*, float>>array = asset_database[category];
 
-	// define pair for return value.
-	std::pair<sf::Texture*, int> returnval;
-	returnval.first = nullptr;
-	returnval.second = -1;
-
 	// Calculate total weight
 	float total_weight = 0.0f;
 	for (std::pair<sf::Texture*, float> pair : array)
 		total_weight += pair.second;
+
+	if (total_weight <= 0.f) return nullptr;
 
 	// generate random value
 	float random_value = static_cast<float>(rand()) / RAND_MAX * total_weight;
@@ -231,26 +246,19 @@ sf::Texture* S_CharactorCreator::getRandomTextureFromkey(categories category)
 		cumulative += pair.second;
 		if (random_value <= cumulative) {
 			switch (category) {
-			case Person:
-				current_character.person = count;
-			case Clothes:
-				current_character.clothes = count;
-			case Hair:
-				current_character.hair= count;
-			case FacialHair:
-				current_character.facial_hair = count;
-			case Hats:
-				current_character.hats = count;
-			case Extras:
-				current_character.extras = count;
-			case Eyes:
-				current_character.eyes = count;
+			case Person:      current_character.person = count; break;
+			case Clothes:     current_character.clothes = count; break;
+			case Hair:        current_character.hair = count; break;
+			case FacialHair:  current_character.facial_hair = count; break;
+			case Hats:        current_character.hats = count; break;
+			case Extras:      current_character.extras = count; break;
+			case Eyes:        current_character.eyes = count; break;
 			}
 			return pair.first;
 		}
 		count++;
 	}
-
+	//should never be called.
 	return nullptr;
 }
 
@@ -258,7 +266,7 @@ sf::Texture* S_CharactorCreator::getRandomTextureFromkey(categories category)
 bool S_CharactorCreator::addTextureToMap(categories map_key, std::string texture_path, float spawn_probability)
 {
 	sf::Texture* tex = new sf::Texture;
-	if (tex->loadFromFile(relative_path + texture_path));
+	if (tex->loadFromFile(relative_path + texture_path))
 	{
 		std::pair<sf::Texture*, float> pair = { tex, spawn_probability };
 		asset_database[map_key].push_back(pair);

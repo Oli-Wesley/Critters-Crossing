@@ -17,26 +17,29 @@ void S_Passport::placeCharacter(std::vector<GameObject*> objects)
 	}
 }
 
-void S_Passport::setIsAccepted(bool _is_accepted)
+void S_Passport::setShouldBeAccepted(bool _is_accepted)
 {
-	is_accepted = _is_accepted;
+	should_be_accepted = _is_accepted;
 }
 
-bool S_Passport::getIsAccepted()
+bool S_Passport::getShouldBeAccepted()
 {
-	return is_accepted;
+	return should_be_accepted;
+}
+
+bool S_Passport::checkCorrectness()
+{
+	bool stamp_state = getStampState(); // true stamped accept, false if stamped deny
+
+	if (should_be_accepted == stamp_state)
+		return true;
+	return false;
 }
 
 void S_Passport::stamp(int state)
 {
 	if (game_object->isDrawn()) {
-		accept_deny_script->setState(S_AcceptDeny::State(state));
-		// check if the stamp is correct (static cast to stop the warnings...)
-		if (is_accepted == static_cast<bool>(state))
-			is_current_stamp_correct = 1;
-		else
-			is_current_stamp_correct = 0;
-		// std::cout << is_current_stamp_correct << "\n";
+		accept_deny_script->setState(S_AcceptDeny::State(state)); // set texture
 	}
 }
 

@@ -55,7 +55,8 @@ void S_GameSceneManager::setupPassport()
 	s_character_creator->createCharacter();
 	// give the passport the current character, then generate a similar one (generating similar one returns bool, true if the character is notably different)
 	s_passport->placeCharacter(s_character_creator->getCurrentCharacter());
-	s_passport->setIsAccepted(s_character_creator->createSimilarCharacter());
+	// generate another character if similar enough to be accepted set passports accepted value to true.
+	s_passport->setShouldBeAccepted(s_character_creator->createSimilarCharacter()); 
 
 	obj_character_creator->getTransform()->setLocalPosition(-250, 25);
 	s_character_creator->setTargetPos(25);
@@ -70,22 +71,27 @@ void S_GameSceneManager::checkResult()
 			s_lamp_manager = game_object->getChildByName("Lamp_Manager")->getComponent<S_LampManager>();
 
 		// send person in direction of stamp regardless of if it was correct or not.
+		// accepted stamp
 		if (s_passport->getStampState())
 		{
 			s_character_creator->setTargetPos(720);
 			s_character_creator->setMovementSpeed(200);
 		}
+		// denied stamp
 		else {
 			s_character_creator->setTargetPos(-250);
 		}
 
-		if (s_passport->isCorrect())
-		{
+		// correct stamp for the character
+		if (s_passport->checkCorrectness()) {
 			correct_count++;
+			std::cout << "passport has been stamped correctly\n";
 		}
 		else {
 			incorrect_count++;
+			std::cout << "passport has been stamped incorrectly\n";
 		}
+
 		s_passport->stamp(2); // clear passport
 		obj_passport->setDrawn(0);
 	}

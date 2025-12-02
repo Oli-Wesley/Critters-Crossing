@@ -15,8 +15,6 @@ public:
 		scripts.clear();
 	}
 
-
-	// TODO add a way to fetch a script, probably through findComponent in gameObject. so can do gameobj->getComponent<SCRIPT>()->scriptFunction();
 	void addScript(ScriptableBehaviour* script) {
 		scripts.push_back(script);
 		script->addGameObject(game_object);
