@@ -11,7 +11,7 @@ GameObject::GameObject(std::string _name)
 
 GameObject::~GameObject()
 {
-	destroy();
+	
 }
 
 // update physics with given timestep (affects all children aswell)
@@ -95,17 +95,7 @@ std::vector<IRenderable*> GameObject::render()
 
 void GameObject::destroy()
 {
-	// call destroy on all components (before deleting so they can access others if needed)
-	for (IComponent* comp : components) {
-		comp->onDestroy();
-	}
-	// delete all components
-	for (IComponent* comp : components) {
-		delete comp;
-	}
-
-	// empty components registry
-	components.clear();
+	pending_destroy = true;
 }
 
 void GameObject::destroy(bool destroy_children)
@@ -186,7 +176,7 @@ Transform* GameObject::getTransform()
 }
 
 // returns all children attatched to the gameObject
-std::vector<GameObject*> GameObject::getChilderen()
+std::vector<GameObject*>& GameObject::getChilderen()
 {
 	return childeren;
 }

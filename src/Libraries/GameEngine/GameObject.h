@@ -129,7 +129,7 @@ public:
 	std::vector<GameObject*> getAllChilderen();
 
 	Transform* getTransform();
-	std::vector<GameObject*> getChilderen();
+	std::vector<GameObject*>& getChilderen();
 	GameObject* getChildByName(std::string name);
 	GameObject* getParent();
 	void setParent(GameObject*);
@@ -137,11 +137,13 @@ public:
 	std::string getName();
 	void setName(std::string _name);
 
+	bool isPendingDestroy() { return pending_destroy; };
 protected:
 	std::string name;
 	std::vector<IComponent*> components;
 	bool is_active = true;
 	bool is_drawn = true;
+	bool pending_destroy = false;
 	std::vector<GameObject*> childeren;
 	Transform transform;
 	GameObject* parent = nullptr;

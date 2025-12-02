@@ -13,6 +13,7 @@ public:
 	void start(std::string start_scene);
 	void switchScene(std::string);
 	void addScene(Scene* scene, std::string scene_name);
+	Scene* getCurrentScene();
 	void removeScene(std::string scene_name);
 	GameObject* findGameObject(std::string _id);
 	void runGameLoop(float dt);
@@ -28,6 +29,8 @@ public:
 
 	sf::RenderWindow* getWindow();
 
+	void addToDestroyQueue(GameObject* obj);
+
 protected:
 	static GameSystem* instance;
 
@@ -35,6 +38,7 @@ protected:
 	std::unordered_map<std::string, Scene*> scenes;
 	std::string target_scene;
 	Scene* currentScene;
+	std::vector<GameObject*> destroy_queue;
 
 	// window settings.
 	sf::RenderWindow* window = nullptr;
@@ -58,6 +62,7 @@ protected:
 	void render();
 	void changeScene(); // changeScene last so objects can finish the update loop
 	// without breaking.
+	void flushDestroyQueue();
 
 // Delete copy constructor and assignment operator
 	GameSystem() = default; // only allow creation of class within itself

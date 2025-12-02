@@ -1,9 +1,9 @@
-#include "TitleScene.h"
+#include "GameOverScene.h"
 #include "../Libraries/GameEngine.h"
 #include "../Scripts/S_SceneButton.h"
 #include "../Scripts/S_GlobalData.h"
 
-void TitleScene::load()
+void GameOverScene::load()
 {
   PrefabRegistry* pref = PrefabRegistry::get();
 
@@ -33,8 +33,6 @@ void TitleScene::load()
   play_button->addScript<S_SceneButton>("GameScene", "../Data/Images/Pixelartimages/Desk_button_wide_Idle.png", "../Data/Images/Pixelartimages/Desk_button_wide_hover.png", "../Data/Images/Pixelartimages/Desk_button_wide_pressed.png");
   scene_root->addChild(play_button);
 
-  if (dont_destroy->getChildByName("global_data") == nullptr) {
-	  dont_destroy->addChild(new GameObject("global_data"))->addScript<S_GlobalData>();
-  }
-  
+  std::cout << "TEST GAME OVER:::::  \n";
+  std::cout << GameSystem::get()->getCurrentScene()->dont_destroy->getChildByName("global_data")->getComponent<S_GlobalData>()->score;
 }

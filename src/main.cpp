@@ -1,6 +1,7 @@
 #include "Libraries/GameEngine.h"
 #include "Scenes/GameScene.h"
 #include "Scenes/TitleScene.h"
+#include "Scenes/GameOverScene.h"
 #include "Libraries/GameEngine/Components.h"
 #include "Libraries/GameEngine/Systems/PrefabRegistry.h"
 #include "Prefabs/PrefabLoader.h" // need to include as this registers all the prefabs.
@@ -11,6 +12,7 @@ int main() {
 	GameSystem* sys = GameSystem::get();
 	sys->addScene(new GameScene, "GameScene"); 
 	sys->addScene(new TitleScene, "TitleScene");
+	sys->addScene(new GameOverScene, "GameOverScene");
 	// set window settings (not needed, there are default values)
 	sys->setFramerate(120);
 	sys->setTitle("Critters Crossing");

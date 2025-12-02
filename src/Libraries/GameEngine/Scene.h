@@ -11,7 +11,7 @@ public:
 	~Scene();
 	GameObject* scene_root; // Empty GameObject at 0,0 where everything starts
 	// from.
-	GameObject* dont_destroy;
+	GameObject* dont_destroy = nullptr;
 
 	GameObject* unload(); // Returns Game Objects with Persistance between scenes
 	// (and their childeren)

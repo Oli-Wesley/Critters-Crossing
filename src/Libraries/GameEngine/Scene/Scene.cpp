@@ -3,8 +3,7 @@
 
 Scene::Scene()
 {
-	scene_root = new GameObject("Scene_Root");
-	dont_destroy = new GameObject("Dont_Destroy");
+	dont_destroy = nullptr;
 }
 
 Scene::~Scene()
@@ -15,23 +14,19 @@ Scene::~Scene()
 GameObject* Scene::unload()
 {
 	onUnload(); // call each scene's onUnload functions.
-	std::vector<GameObject*> game_objects = scene_root->getAllChilderen();
-	for (GameObject* obj : game_objects)
-	{
-		delete obj;
-	}
+	scene_root->destroy();
 	return dont_destroy;
 }
 
 void Scene::load(GameObject* _dont_destroy)
 {
-	if (dont_destroy)
-	{
-		delete dont_destroy; // delete the old gameObject just created if a new one
-		// is given.
+	scene_root = new GameObject("Scene_Root"); // create scene root.
+	// call each scene's individual load function.
+	if (_dont_destroy == nullptr) {
+		dont_destroy = new GameObject("Dont_Destroy");
+	}
+	else {
 		dont_destroy = _dont_destroy;
 	}
-
-	// call each scene's individual load function.
 	load();
 }

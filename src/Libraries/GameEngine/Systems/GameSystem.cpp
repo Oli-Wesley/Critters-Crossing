@@ -46,6 +46,11 @@ void GameSystem::addScene(Scene* scene, std::string scene_name)
 	scenes.emplace(scene_name, scene);
 }
 
+Scene* GameSystem::getCurrentScene()
+{
+	return currentScene;
+}
+
 void GameSystem::switchScene(std::string scene_name)
 {
 	if (scenes[scene_name])
@@ -215,4 +220,32 @@ void GameSystem::changeScene()
 		else
 			std::cout << "FAILED TO LOAD SCENE, SCENE EXISTS BUT RETURNS NULLPTR";
 	}
+}
+
+void GameSystem::flushDestroyQueue()
+{
+	for (GameObject* obj : destroy_queue)
+	{
+		// remove from parent safely here
+		if (obj->getParent())
+		{
+			auto& v = obj->getParent()->getChilderen();
+			v.erase(std::remove(v.begin(), v.end(), obj), v.end());
+		}
+
+		// destroy components
+		for (auto* comp : obj->getAllComponents()) {
+			comp->onDestroy();
+			delete comp;
+		}
+
+		// destroy children
+		for (auto* child : obj->getChilderen()) {
+			child->destroy();
+		}
+
+		delete obj;  
+	}
+
+	destroy_queue.clear();
 }

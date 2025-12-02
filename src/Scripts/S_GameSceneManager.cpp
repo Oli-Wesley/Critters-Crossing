@@ -1,5 +1,8 @@
 #include "S_GameSceneManager.h"
 #include "../Libraries/GameEngine/GameObject.h"
+#include "../Libraries/GameEngine/Systems/GameSystem.h"
+#include "../Libraries/GameEngine/Scene.h"
+#include "S_GlobalData.h"
 
 #pragma once 
 
@@ -39,11 +42,13 @@ void S_GameSceneManager::update(float dt)
 
 void S_GameSceneManager::setupPassport()
 {
-	if (s_character_creator == nullptr || s_passport == nullptr || obj_character_creator == nullptr || obj_passport == nullptr) {
+	// if any are null, fetch all again (not the best way, ideally use seperate ones, but once its found 1 it should find them all so not that bad)
+	if (s_character_creator == nullptr || s_passport == nullptr || obj_character_creator == nullptr || obj_passport == nullptr || c_next_button == nullptr) {
 		obj_passport = game_object->getChildByName("Passport");
 		s_passport = obj_passport->getComponent<S_Passport>();
 		obj_character_creator = game_object->getChildByName("Character_Creator");
 		s_character_creator = obj_character_creator->getComponent<S_CharactorCreator>();
+		c_next_button = game_object->getChildByName("Desk")->getComponent<Clickable>();
 	}
 
 	// call the create character script on the charactor creator. 
@@ -88,5 +93,7 @@ void S_GameSceneManager::checkResult()
 
 void S_GameSceneManager::gameOver()
 {
-	std::cout << "GAME OVER\n Amount Correct: " << correct_count << std::endl;
+	GameObject* test =GameSystem::get()->getCurrentScene()->dont_destroy;
+	GameSystem::get()->getCurrentScene()->dont_destroy->getChildByName("global_data")->getComponent<S_GlobalData>()->score = correct_count;
+	GameSystem::get()->switchScene("GameOverScene");
 }
