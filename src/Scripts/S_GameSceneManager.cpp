@@ -3,6 +3,7 @@
 #include "../Libraries/GameEngine/Systems/GameSystem.h"
 #include "../Libraries/GameEngine/Scene.h"
 #include "S_GlobalData.h"
+#include <iostream>
 
 #pragma once 
 
@@ -99,7 +100,18 @@ void S_GameSceneManager::checkResult()
 
 void S_GameSceneManager::gameOver()
 {
-	GameObject* test =GameSystem::get()->getCurrentScene()->dont_destroy;
-	GameSystem::get()->getCurrentScene()->dont_destroy->getChildByName("global_data")->getComponent<S_GlobalData>()->score = correct_count;
+	GameObject* dont_destroy = GameSystem::get()->getCurrentScene()->dont_destroy;
+
+	// fallback to create global data here, incase title screen was never run (SHOULD NEVER HAPPEN IN GAMEPLAY, BUT HAPPENS IN TESTING DUE TO LOADING THE SCENES DIRECTLY AND SKIPPING TITLE SCENE)
+	if (dont_destroy->getChildByName("global_data") == nullptr) {
+		dont_destroy->addChild(new GameObject("global_data"))->addScript<S_GlobalData>();
+	}
+
+	// set score and high score to global data.
+	S_GlobalData* global_data = GameSystem::get()->getCurrentScene()->dont_destroy->getChildByName("global_data")->getComponent<S_GlobalData>();
+	global_data->score = correct_count;
+	if (correct_count > global_data->high_score)
+		global_data->high_score = correct_count;
+
 	GameSystem::get()->switchScene("GameOverScene");
 }

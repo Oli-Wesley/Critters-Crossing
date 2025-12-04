@@ -20,7 +20,7 @@ public:
 
 protected:
 	bool was_hovered;
-	bool was_mouse_pressed;
+	bool was_mouse_pressed = 1;
 	bool is_hovering;
 	bool is_mouse_pressed;
 	bool checkPointCol(sf::FloatRect bounds, sf::Vector2f _pos);

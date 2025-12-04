@@ -17,12 +17,12 @@ void S_Stamp::update(float dt)
 			is_green_stamp = 0;
 
 		// get start position. 
-		start_pos = game_object->getTransform()->getGlobalPosition();
+		start_pos = game_object->getTransform()->getLocalPosition();
 	}
 
 	// snap back to start position 
 	if (!game_object->getComponent<Draggable>()->isHeld())
-		game_object->getTransform()->setGlobalPosition(start_pos);
+		game_object->getTransform()->setLocalPosition(start_pos);
 }
 
 void S_Stamp::onTriggerStay(GameObject* other)

@@ -21,6 +21,7 @@ public:
 	void setTitle(std::string _title);
 	void setResolution(sf::Vector2i res);
 	void setResolution(int x, int y);
+	void setFullscreen(bool state);
 	void setFramerate(float framerate);
 	void setPhysicsTimestep(float tickspersecond);
 
@@ -42,6 +43,7 @@ protected:
 
 	// window settings.
 	sf::RenderWindow* window = nullptr;
+	bool is_fullscreen = false;
 	sf::Clock clock;
 	sf::VideoMode resolution = sf::VideoMode(800, 600);
 	std::string window_title = "Window";
@@ -62,7 +64,7 @@ protected:
 	void render();
 	void changeScene(); // changeScene last so objects can finish the update loop
 	// without breaking.
-	void flushDestroyQueue();
+	void flushDestroyQueue(); // clear objects that were destroyed this game tick. (done at end so any objects with refrences to them can finish running)
 
 // Delete copy constructor and assignment operator
 	GameSystem() = default; // only allow creation of class within itself

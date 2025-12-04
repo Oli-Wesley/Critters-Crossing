@@ -37,7 +37,7 @@ void Clickable::update(float dt)
 	}
 
 	// Click
-	if (is_hovering && is_mouse_pressed && !was_mouse_pressed)
+	if (is_hovering && !was_mouse_pressed && is_mouse_pressed)
 	{
 		for (auto* comp : game_object->getAllComponents())
 		{

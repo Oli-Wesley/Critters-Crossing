@@ -23,7 +23,6 @@ void GameObject::physicsUpdate(float timestep)
 			IPhysicsObject* physics = dynamic_cast<IPhysicsObject*>(comp);
 			if (physics) {
 				physics->physicsUpdate(timestep);
-				//return; // TODO: ONLY DO ON HIGHEST IN HEIRARCHY WITH A PHYSICS OBJECT OR ISSUES MAY HAPPEN <-- it does but easy to avoid so leaving in because funny stuff may be posisble with it...
 			}
 		}
 		// call on all childeren
@@ -96,6 +95,7 @@ std::vector<IRenderable*> GameObject::render()
 
 void GameObject::destroy()
 {
+	if (pending_destroy) return; // ensure its only added to queue once.
 	GameSystem::get()->addToDestroyQueue(this);
 	pending_destroy = true;
 }

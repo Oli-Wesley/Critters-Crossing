@@ -9,7 +9,6 @@ private:
 public:
 	virtual ~IScriptableBehaviour() {
 		for (auto* s : scripts) {
-			s->onDestroy();
 			delete s;
 		}
 		scripts.clear();
@@ -35,15 +34,15 @@ public:
 
 	// all functions that are scriptable. 
 	// Called when the component is enabled
-	void onEnable() { for (auto* s : scripts) s->onEnable(); }
+	void onEnable() override { for (auto* s : scripts) s->onEnable(); }
 	// Called every frame
-	void update(float dt) { for (auto* s : scripts) s->update(dt); }
+	void update(float dt) override { for (auto* s : scripts) s->update(dt); }
 	// called after update
-	void lateUpdate(float dt) { for (auto* s : scripts) s->lateUpdate(dt); }
+	void lateUpdate(float dt) override { for (auto* s : scripts) s->lateUpdate(dt); }
 	// Called when the GameObject is disabled 
-	void onDisable() { for (auto* s : scripts) s->onDisable(); }
+	void onDisable() override { for (auto* s : scripts) s->onDisable(); }
 	// Called when the component is destroyed
-	void onDestroy() { for (auto* s : scripts) s->onDestroy(); }
+	void onDestroy() override { for (auto* s : scripts) s->onDestroy(); }
 	// called at fixed intervals. (physics tick)
 	void fixedUpdate(float timestep) { for (auto* s : scripts) s->fixedUpdate(timestep); }
 

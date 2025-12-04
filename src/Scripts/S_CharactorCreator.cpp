@@ -2,6 +2,7 @@
 #include "../Libraries/GameEngine.h"
 #include <algorithm>
 #include <random> 
+#include <iostream>
 
 void S_CharactorCreator::start()
 {
@@ -146,7 +147,7 @@ void S_CharactorCreator::update(float dt)
 // sets the target pos to move towards
 void S_CharactorCreator::setTargetPos(int x_pos)
 {
-	target_pos = sf::Vector2f(x_pos, game_object->getTransform()->getLocalPosition().y);
+	target_pos = sf::Vector2f(x_pos * GameSystem::get()->getCurrentScene()->scene_root->getTransform()->getLocalScale().x, game_object->getTransform()->getLocalPosition().y);
 	in_target_pos = 0;
 }
 
@@ -175,7 +176,6 @@ void S_CharactorCreator::createCharacter()
 	eyes_obj->getComponent<Texture>()->setTexture(getRandomTextureFromkey(Eyes));
 }
 
-// TODO: re-write tf out if this function, it sucks ass.
 // returns false if notable changes have been made (wont be accepted). (should be just under 50% of the time)
 bool S_CharactorCreator::createSimilarCharacter()
 {
@@ -204,7 +204,7 @@ bool S_CharactorCreator::createSimilarCharacter()
 	for (std::pair<GameObject*, categories> feature : features) {
 		if (((double)rand() / RAND_MAX) < chance) {
 			feature.first->getComponent<Texture>()->setTexture(getRandomTextureFromkey(feature.second));
-			chance*=0.5;
+			chance*=0.5; // decrease chance to change another texture. 
 		}
 	}
 
@@ -227,7 +227,7 @@ std::vector<GameObject*> S_CharactorCreator::getCurrentCharacter()
 
 sf::Texture* S_CharactorCreator::getRandomTextureFromkey(categories category)
 {
-	std::vector<std::pair<sf::Texture*, float>>array = asset_database[category];
+	std::vector<std::pair<sf::Texture*, float>> array = asset_database[category];
 
 	// Calculate total weight
 	float total_weight = 0.0f;

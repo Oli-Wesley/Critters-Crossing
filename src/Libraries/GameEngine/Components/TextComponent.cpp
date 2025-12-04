@@ -11,7 +11,15 @@ void TextComponent::setString(const std::string& str)
 void TextComponent::setFont(sf::Font* newFont)
 {
 	font = newFont;
+	font->setSmooth(false); // disable smoothing bc it looks ass
 	updateRenderer();
+}
+
+void TextComponent::setFont(std::string path)
+{
+	sf::Font* f = new sf::Font();
+	f->loadFromFile(path);
+	setFont(f);
 }
 
 void TextComponent::setCharacterSize(unsigned int size)
@@ -63,7 +71,7 @@ void TextComponent::updateRenderer()
 	renderText->setString(text);
 	if (font)
 		renderText->setFont(*font);
-	renderText->setCharacterSize(charSize);
+	renderer->text_size = charSize;
 	renderText->setFillColor(fillColor);
 	renderText->setStyle(textStyle);
 }

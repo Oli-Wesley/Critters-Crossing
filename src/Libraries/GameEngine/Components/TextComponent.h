@@ -14,6 +14,7 @@ public:
 
 	void setString(const std::string& str);
 	void setFont(sf::Font* font);
+	void setFont(std::string path);
 	void setCharacterSize(unsigned int size);
 	void setFillColor(const sf::Color& color);
 	void setStyle(sf::Text::Style style);

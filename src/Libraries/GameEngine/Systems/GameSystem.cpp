@@ -1,6 +1,7 @@
 #include "GameSystem.h"
 #include "../Scene.h"
 #include "PhysicsSystem.h"
+#include <iostream>
 
 // Define the static member variable
 GameSystem* GameSystem::instance = nullptr;
@@ -26,8 +27,14 @@ void GameSystem::start()
 		sf::Event e;
 		while (window->pollEvent(e))
 		{
-			if (e.type == sf::Event::Closed)
+			if (e.type == sf::Event::Closed) {
+				// unload current scene
+				currentScene->unload();
+				// destroy dont_destroy to allow anything attatched to it to run its unload functions.
+				currentScene->dont_destroy->destroy();
+				// close the window.
 				window->close();
+			}
 		}
 		runGameLoop(clock.restart().asSeconds()); // pass time since last frame as
 		// dt to the current gameLoop.
@@ -77,6 +84,7 @@ void GameSystem::runGameLoop(float dt)
 	lateUpdate(dt); // second update tick 
 	render(); // render everything to screen
 	changeScene(); // change scene (at the end to allow the tick to finish)
+	flushDestroyQueue();
 }
 
 void GameSystem::setTitle(std::string _title)
@@ -127,7 +135,7 @@ sf::RenderWindow* GameSystem::getWindow()
 
 void GameSystem::addToDestroyQueue(GameObject* obj)
 {
-	destroy_queue.push_back(obj);
+	destroy_queue.insert(destroy_queue.begin(), obj);
 }
 
 void GameSystem::runPhysics(float timestep)
@@ -225,31 +233,51 @@ void GameSystem::changeScene()
 		else
 			std::cout << "FAILED TO LOAD SCENE, SCENE EXISTS BUT RETURNS NULLPTR";
 	}
+	// resize to window size.
+	currentScene->onWindowResize(sf::Vector2i(resolution.width, resolution.height));
+
 }
 
+// this has caused me great pain, thanks mr gpt for helping me fix all my logic errors (rare AI W) 
 void GameSystem::flushDestroyQueue()
 {
+	std::vector<GameObject*> finalList;
+
+	// get every object that needs destroying (children of children of children ect...)
 	for (GameObject* obj : destroy_queue)
 	{
-		// remove from parent safely here
-		if (obj->getParent())
+		// add the object
+		finalList.push_back(obj);
+
+		// add all of its children and deeper descendents
+		auto allChildren = obj->getAllChilderen();
+		finalList.insert(finalList.end(), allChildren.begin(), allChildren.end());
+	}
+
+	// make sure no elements were duplicated in the list
+	std::sort(finalList.begin(), finalList.end());
+	finalList.erase(std::unique(finalList.begin(), finalList.end()), finalList.end());
+
+	// remove all parents from gameObjects before destroying to prevent nullptr errors
+	for (GameObject* obj : finalList)
+	{
+		if (auto* parent = obj->getParent())
 		{
-			auto& v = obj->getParent()->getChilderen();
+			auto& v = parent->getChilderen();
 			v.erase(std::remove(v.begin(), v.end(), obj), v.end());
 		}
+	}
 
+	// destroy everything
+	for (GameObject* obj : finalList)
+	{
 		// destroy components
 		for (auto* comp : obj->getAllComponents()) {
 			comp->onDestroy();
 			delete comp;
 		}
 
-		// destroy children
-		for (auto* child : obj->getChilderen()) {
-			child->destroy();
-		}
-
-		delete obj;  
+		delete obj;
 	}
 
 	destroy_queue.clear();

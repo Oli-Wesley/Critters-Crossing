@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IComponent.h"
-#include <iostream>
+
 #include "SFML/System/Vector2.hpp"
 
 class Transform : public IComponent {
