@@ -23,6 +23,6 @@ std::string S_ScoreDisplay::fillToLength(std::string string)
 {
 	// while string lenght is less than desired. 
 	while (string.size() < length)
-		string = string + "0";
+		string = "0" + string;
 	return string;
 }
