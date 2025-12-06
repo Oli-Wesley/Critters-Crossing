@@ -9,7 +9,6 @@ class GameSystem
 {
 public:
 	static GameSystem* get();
-	void start();
 	void start(std::string start_scene);
 	void switchScene(std::string);
 	void addScene(Scene* scene, std::string scene_name);

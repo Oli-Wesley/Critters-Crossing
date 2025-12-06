@@ -15,13 +15,18 @@ GameSystem* GameSystem::get()
 	return instance;
 }
 
-void GameSystem::start()
+void GameSystem::start(std::string start_scene)
 {
+
+	std::cout << "PRESS F3 TO TOGGLE DEBUG\n";
+
+	switchScene(start_scene); // change target scene.
+	changeScene();            // actually change into the scene.
+
 	window = new sf::RenderWindow(resolution, window_title);
 	window->setFramerateLimit(framerate);
 
 	clock.restart();
-
 	while (window->isOpen())
 	{
 		sf::Event e;
@@ -36,17 +41,14 @@ void GameSystem::start()
 				window->close();
 				return;
 			}
+			else if (e.type == sf::Event::KeyPressed) {
+				if (e.key.code == sf::Keyboard::F3)
+					setDebug(!isDebug());
+			}
 		}
 		runGameLoop(clock.restart().asSeconds()); // pass time since last frame as
 		// dt to the current gameLoop.
 	}
-}
-
-void GameSystem::start(std::string start_scene)
-{
-	switchScene(start_scene); // change target scene.
-	changeScene();            // actually change into the scene.
-	start(); // call the other start function that contains the gameLoop.
 }
 
 void GameSystem::addScene(Scene* scene, std::string scene_name)
@@ -127,6 +129,7 @@ bool GameSystem::isDebug()
 void GameSystem::setDebug(bool flag)
 {
 	is_debug = flag;
+	std::cout << "Toggled Debug: " << is_debug << "\n";
 }
 
 sf::RenderWindow* GameSystem::getWindow()
