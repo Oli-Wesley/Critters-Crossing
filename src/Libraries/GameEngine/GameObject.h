@@ -38,13 +38,13 @@ public:
         }
 
         // Create and add new component using make_unique
-        auto newC = std::make_unique<T>(std::forward<Args>(args)...);
-        T* rawPtr = newC.get(); // Get raw pointer to return before moving ownership
+        std::unique_ptr<T> new_component = std::make_unique<T>(std::forward<Args>(args)...);
+        T* rawPtr = new_component.get(); // Get raw pointer to return before moving ownership
 
         rawPtr->setGameObject(this);
         rawPtr->start();
 
-        components.push_back(std::move(newC)); // Move ownership to the vector
+        components.push_back(std::move(new_component)); // Move ownership to the vector
 
         return rawPtr;
     }
