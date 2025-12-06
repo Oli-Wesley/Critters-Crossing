@@ -38,13 +38,13 @@ void TitleScene::load()
   play_button->addScript<S_SceneButton>("GameScene", "../Data/Images/Pixelartimages/Desk_button_wide_Idle.png", "../Data/Images/Pixelartimages/Desk_button_wide_hover.png");
 
 
-  // only create global data the first time the scene is loaded. 
+  // only create global data the first time the scene is loaded.  TODO: add somewhere to put things onto dont_destroy
   if (dont_destroy->getChildByName("global_data") == nullptr) {
 	  dont_destroy->addChild(std::make_unique<GameObject>("global_data"))->addScript<S_GlobalData>();
+	  dont_destroy->addChild(pref->InstantiatePrefab("P_FPSCounter", 10, 10));
   }
 
-  dont_destroy->addChild(pref->InstantiatePrefab("P_FPSCounter", 10, 10));
-
+ 
 
   // Score Displays
   GameObject* number_display = record->addChild(pref->InstantiatePrefab("P_NumberDisplay", 11, 25));
