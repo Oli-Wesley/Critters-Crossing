@@ -18,12 +18,14 @@ GameSystem* GameSystem::get()
 void GameSystem::start(std::string start_scene)
 {
 
-	std::cout << "PRESS F3 TO TOGGLE DEBUG\n";
+	std::cout << "PRESS F1 To Show scene_root Tree\n";
+	std::cout << "PRESS F2 To Show dont_destroy Tree\n";
+	std::cout << "PRESS F3 To Toggle Debug\n";
 
 	switchScene(start_scene); // change target scene.
 	changeScene();            // actually change into the scene.
 
-	window = new sf::RenderWindow(resolution, window_title);
+	window = std::make_unique<sf::RenderWindow>(resolution, window_title);
 	window->setFramerateLimit(framerate);
 
 	clock.restart();
@@ -42,7 +44,17 @@ void GameSystem::start(std::string start_scene)
 				return;
 			}
 			else if (e.type == sf::Event::KeyPressed) {
-				if (e.key.code == sf::Keyboard::F3)
+				if (e.key.code == sf::Keyboard::F1)
+				{
+					if (currentScene != nullptr && currentScene->scene_root)
+						currentScene->scene_root->outputChildrenTree();
+				}
+				else if (e.key.code == sf::Keyboard::F2)
+				{
+					if (currentScene != nullptr && currentScene->dont_destroy)
+						currentScene->dont_destroy->outputChildrenTree();
+				}
+				else if (e.key.code == sf::Keyboard::F3)
 					setDebug(!isDebug());
 			}
 		}
@@ -109,6 +121,11 @@ void GameSystem::setResolution(int x, int y)
 	setResolution(sf::Vector2(x, y));
 }
 
+void GameSystem::setFullscreen(bool state)
+{
+	// TODO THIS:
+}
+
 void GameSystem::setFramerate(float _framerate)
 {
 	framerate = _framerate;
@@ -134,7 +151,7 @@ void GameSystem::setDebug(bool flag)
 
 sf::RenderWindow* GameSystem::getWindow()
 {
-	return window;
+	return window.get();
 }
 
 void GameSystem::addToDestroyQueue(GameObject* obj)
@@ -166,9 +183,10 @@ void GameSystem::fixedUpdate(float dt)
 	while (accumulator >= physics_timestep)
 	{
 		runPhysics(physics_timestep);
-		if (currentScene && currentScene->scene_root)
+		if (currentScene && currentScene->scene_root && currentScene->dont_destroy)
 		{
 			currentScene->scene_root->fixedUpdate(physics_timestep);
+			currentScene->dont_destroy->fixedUpdate(physics_timestep);
 		}
 		accumulator -= physics_timestep;
 	}
@@ -176,8 +194,11 @@ void GameSystem::fixedUpdate(float dt)
 
 void GameSystem::update(float dt)
 {
-	if (currentScene != nullptr)
+	if (currentScene != nullptr) {
 		currentScene->scene_root->update(dt);
+		currentScene->dont_destroy->update(dt);
+	}
+
 }
 
 void GameSystem::lateUpdate(float dt)
@@ -192,6 +213,8 @@ void GameSystem::render()
 	{
 		window->clear(currentScene->getSceneColor());
 		std::vector<IRenderable*> renderables = currentScene->scene_root->render();
+		std::vector<IRenderable*> other = currentScene->dont_destroy->render();
+		renderables.insert(renderables.end(), other.begin(), other.end());
 		// simple bubble sort, sort the list based on layer. (kinda slow but its fast enough for this..)
 		bool changed = 1;
 		IRenderable* hold;
@@ -216,7 +239,7 @@ void GameSystem::render()
 		// render now sorted list
 		for (IRenderable* var : renderables)
 		{
-			var->render(window);
+			var->render(getWindow());
 		}
 	}
 	else

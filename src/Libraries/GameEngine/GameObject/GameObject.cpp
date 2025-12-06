@@ -1,4 +1,4 @@
-#include "../GameObject.h"
+﻿#include "../GameObject.h"
 #include "../Components/Transform.h"
 #include "../ComponentInterfaces.h"
 #include "../Systems/GameSystem.h"
@@ -15,7 +15,7 @@ GameObject::GameObject(std::string _name)
 GameObject::~GameObject()
 {
 	if (GameSystem::get()->isDebug())
-		std::cout << "GameObject with name: [" << name << "] has been destroyed.\n";
+		std::cout << "Destroyed GameObject with name: [" << name << "]\n";
 }
 
 // update physics with given timestep (affects all children aswell)
@@ -248,4 +248,41 @@ std::string GameObject::getName()
 void GameObject::setName(std::string _name)
 {
 	name = _name;
+}
+
+void GameObject::outputChildrenTree()
+{
+	std::cout << "----------------------------------------\n";
+	outputChildrenTree("");
+	std::cout << "----------------------------------------\n";
+}
+
+
+void GameObject::outputChildrenTree(std::string prefix)
+{
+	// if first element, just display name
+	if (prefix.empty()) {
+		std::cout << "[" << getName() << "]  Components:(" << getAllComponents().size() + 1 << ")" << std::endl;
+	}
+
+	// go through all children
+	for (size_t i = 0; i < childeren.size(); ++i) {
+		const auto& child = childeren[i];
+		if (!child) continue;
+
+		// Check if this is the last child in the current list
+		bool is_last_child = (i == childeren.size() - 1);
+
+		// Define the current line's connector ('L' for last, '|' otherwise)
+		std::string connector = is_last_child ? "L-" : "|-";
+
+		// Define the prefix for the next depth level
+		std::string next_prefix = prefix + (is_last_child ? "     " : "|    ");
+
+		// Output the child's line
+		std::cout << prefix << connector <<"[" << child->getName() << "]  Components:(" <<  child->getAllComponents().size()+1 << ")" << std::endl;
+
+		// Recurse for the child's children
+		child->outputChildrenTree(next_prefix);
+	}
 }

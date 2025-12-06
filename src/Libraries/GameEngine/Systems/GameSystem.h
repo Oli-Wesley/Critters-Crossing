@@ -41,7 +41,7 @@ protected:
 	std::vector<GameObject*> destroy_queue;
 
 	// window settings.
-	sf::RenderWindow* window = nullptr;
+	std::unique_ptr<sf::RenderWindow> window = nullptr;
 	bool is_fullscreen = false;
 	sf::Clock clock;
 	sf::VideoMode resolution = sf::VideoMode(800, 600);
