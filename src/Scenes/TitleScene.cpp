@@ -43,6 +43,8 @@ void TitleScene::load()
 	  dont_destroy->addChild(std::make_unique<GameObject>("global_data"))->addScript<S_GlobalData>();
   }
 
+  dont_destroy->addChild(pref->InstantiatePrefab("P_FPSCounter", 10, 10));
+
 
   // Score Displays
   GameObject* number_display = record->addChild(pref->InstantiatePrefab("P_NumberDisplay", 11, 25));

@@ -13,3 +13,4 @@
 #include "P_Desk.h"
 #include "P_SceneButton.h"
 #include "P_NumberDisplay.h"
+#include "P_FPSCounter.h"

@@ -154,7 +154,10 @@ public:
     void setName(std::string _name);
 
     bool isPendingDestroy() { return pending_destroy; };
+
+    void outputChildrenTree();
 protected:
+    void outputChildrenTree(std::string prefix);
     std::string name;
     std::vector<std::unique_ptr<IComponent>> components;
     bool is_active = true;
