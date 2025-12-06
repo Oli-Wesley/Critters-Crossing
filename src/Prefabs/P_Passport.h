@@ -7,10 +7,10 @@
 
 REGISTER_PREFAB(
 	P_Passport,            // name
-	[]() -> GameObject* // lambda construction func
+	[]() -> std::unique_ptr<GameObject> // lambda construction func
 	{
 		PrefabRegistry* pref = PrefabRegistry::get();
-		GameObject* game_object = new GameObject("Passport");
+		std::unique_ptr<GameObject> game_object = std::make_unique<GameObject>("Passport");
 		game_object->getTransform()->setLocalScale(3);
 		game_object->getTransform()->setLocalZheight(3);
 
@@ -20,38 +20,31 @@ REGISTER_PREFAB(
 		GameObject* passport_accept_deny = game_object->addChild(pref->InstantiatePrefab("P_RenderableObject", "passport_accept_deny"));
 
 		//person object.
-		GameObject* person_obj = pref->InstantiatePrefab("P_RenderableObject", "person");
-		passport_person->addChild(person_obj);
+		GameObject* person_obj = passport_person->addChild(pref->InstantiatePrefab("P_RenderableObject", "person"));
 		person_obj->getTransform()->setLocalZheight(1);
 
 		//clothes object.
-		GameObject* clothes_obj = pref->InstantiatePrefab("P_RenderableObject", "clothes");
-		passport_person->addChild(clothes_obj);
+		GameObject* clothes_obj = passport_person->addChild(pref->InstantiatePrefab("P_RenderableObject", "clothes"));
 		clothes_obj->getTransform()->setLocalZheight(1.1);
 
 		//hair object.
-		GameObject* hair_obj = pref->InstantiatePrefab("P_RenderableObject", "hair");
-		passport_person->addChild(hair_obj);
+		GameObject* hair_obj = passport_person->addChild(pref->InstantiatePrefab("P_RenderableObject", "hair"));
 		hair_obj->getTransform()->setLocalZheight(1.5);
 
 		//facial_hair object.
-		GameObject* facial_hair_obj = pref->InstantiatePrefab("P_RenderableObject", "facial_hair");
-		passport_person->addChild(facial_hair_obj);
+		GameObject* facial_hair_obj = passport_person->addChild(pref->InstantiatePrefab("P_RenderableObject", "facial_hair"));
 		facial_hair_obj->getTransform()->setLocalZheight(1.2);
 
 		//hats object.
-		GameObject* hats_obj = pref->InstantiatePrefab("P_RenderableObject", "hat");
-		passport_person->addChild(hats_obj);
+		GameObject* hats_obj = passport_person->addChild(pref->InstantiatePrefab("P_RenderableObject", "hat"));
 		hats_obj->getTransform()->setLocalZheight(1.6);
 
 		//extras object.
-		GameObject* extras_obj = pref->InstantiatePrefab("P_RenderableObject", "extras");
-		passport_person->addChild(extras_obj);
+		GameObject* extras_obj = passport_person->addChild(pref->InstantiatePrefab("P_RenderableObject", "extras"));
 		extras_obj->getTransform()->setLocalZheight(1.4);
 
 		//eyes object. 
-		GameObject* eyes_obj = pref->InstantiatePrefab("P_RenderableObject", "eyes");
-		passport_person->addChild(eyes_obj);
+		GameObject* eyes_obj = passport_person->addChild(pref->InstantiatePrefab("P_RenderableObject", "eyes"));
 		eyes_obj->getTransform()->setLocalZheight(1.3);
 
 		passport_person->getTransform()->setLocalScale(0.5, 0.5); // scale down so person fits.

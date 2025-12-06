@@ -10,7 +10,6 @@ public:
 		ACCEPT,
 		CLEAR
 	};
-
 	void setState(State state);
 
 	State getState() { return current_state; };

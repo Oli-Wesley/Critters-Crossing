@@ -3,10 +3,10 @@
 
 REGISTER_PREFAB(
 	P_ElFisho,            // name
-	[]() -> GameObject* // lambda construction func
+	[]() -> std::unique_ptr<GameObject> // lambda construction func
 	{
 		PrefabRegistry* pref = PrefabRegistry::get();
-		GameObject* game_object = pref->InstantiatePrefab("P_RenderableObject", "El_Fisho");
+		std::unique_ptr<GameObject> game_object = pref->InstantiatePrefab("P_RenderableObject", "El_Fisho");
 		game_object->getComponent<Texture>()->setTexture("../Data/Images/Pixelartimages/El_Fisho.png");
 		GameObject* plaque = game_object->addChild(pref->InstantiatePrefab("P_RenderableObject", "Plaque"));
 		plaque->getComponent<Texture>()->setTexture("../Data/Images/Pixelartimages/Plaque.png");

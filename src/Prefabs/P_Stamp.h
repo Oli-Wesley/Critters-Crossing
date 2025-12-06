@@ -4,9 +4,9 @@
 
 REGISTER_PREFAB(
 	P_Stamp,            // name
-	[]() -> GameObject* // lambda construction func
+	[]() -> std::unique_ptr<GameObject> // lambda construction func
 	{
-		GameObject* game_object = new GameObject("stamp_none");
+		std::unique_ptr<GameObject> game_object = std::make_unique<GameObject>("stamp_none");
 		game_object->getTransform()->setLocalScale(2.5);
 		game_object->getTransform()->setLocalZheight(10);
 

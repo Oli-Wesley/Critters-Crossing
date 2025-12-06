@@ -1,6 +1,7 @@
 #include "TextComponent.h"
 #include "../GameObject.h"
 #include "TextRenderer.h"
+#include <memory>
 
 void TextComponent::setString(const std::string& str)
 {
@@ -8,16 +9,16 @@ void TextComponent::setString(const std::string& str)
 	updateRenderer();
 }
 
-void TextComponent::setFont(sf::Font* newFont)
+void TextComponent::setFont(std::unique_ptr<sf::Font>& newFont)
 {
-	font = newFont;
+	font = std::move(newFont);
 	font->setSmooth(false); // disable smoothing bc it looks ass
 	updateRenderer();
 }
 
 void TextComponent::setFont(std::string path)
 {
-	sf::Font* f = new sf::Font();
+	std::unique_ptr<sf::Font> f = std::make_unique<sf::Font>();
 	f->loadFromFile(path);
 	setFont(f);
 }
@@ -46,7 +47,7 @@ const std::string& TextComponent::getString() const
 }
 sf::Font* TextComponent::getFont() const
 {
-	return font;
+	return font.get();
 }
 unsigned int TextComponent::getCharacterSize() const
 {

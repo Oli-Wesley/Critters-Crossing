@@ -4,10 +4,10 @@
 
 REGISTER_PREFAB(
 	P_LampManager,            // name
-	[]() -> GameObject* // lambda construction func
+	[]() -> std::unique_ptr<GameObject> // lambda construction func
 	{
 		PrefabRegistry* pref = PrefabRegistry::get();
-		GameObject* game_object = new GameObject("Lamp_Manager");
+		std::unique_ptr<GameObject> game_object = std::make_unique<GameObject>("Lamp_Manager");
 		game_object->getTransform()->setLocalZheight(5.1);
 		game_object->getTransform()->setLocalScale(5);
 

@@ -9,14 +9,13 @@ void TitleScene::load()
   PrefabRegistry* pref = PrefabRegistry::get();
 
   // background
-  GameObject* background = new GameObject("background");
+  GameObject* background = scene_root->addChild(std::make_unique<GameObject>("background"));
   background->getTransform()->setLocalPosition(0, 0);
   background->getTransform()->setLocalScale(5, 5);
   background->getTransform()->setLocalZheight(-5);
 
   background->addComponent<SpriteRenderer>();
   background->addComponent<Texture>("../Data/Images/Pixelartimages/Title Screen.png");
-  scene_root->addChild(background);
 
   GameObject* notices = scene_root->addChild(pref->InstantiatePrefab("P_RenderableObject", "Notices"));
   notices->getComponent<Texture>()->setTexture("../Data/Images/Pixelartimages/Notices.png");
@@ -29,7 +28,7 @@ void TitleScene::load()
   record->getTransform()->setLocalPosition(675, 400);
 
   // play button
-  GameObject* play_button = new GameObject("PlayButton");
+  GameObject* play_button = scene_root->addChild(std::make_unique<GameObject>("PlayButton"));
   play_button->getTransform()->setLocalPosition(280, 350);
   play_button->getTransform()->setLocalScale(5, 5);
   play_button->addComponent<SpriteRenderer>();
@@ -37,12 +36,11 @@ void TitleScene::load()
   play_button->addComponent<Texture>();
   play_button->addComponent<BoxCollider>(21, 15);
   play_button->addScript<S_SceneButton>("GameScene", "../Data/Images/Pixelartimages/Desk_button_wide_Idle.png", "../Data/Images/Pixelartimages/Desk_button_wide_hover.png");
-  scene_root->addChild(play_button);
 
 
   // only create global data the first time the scene is loaded. 
   if (dont_destroy->getChildByName("global_data") == nullptr) {
-	  dont_destroy->addChild(new GameObject("global_data"))->addScript<S_GlobalData>();
+	  dont_destroy->addChild(std::make_unique<GameObject>("global_data"))->addScript<S_GlobalData>();
   }
 
 

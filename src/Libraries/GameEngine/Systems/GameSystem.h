@@ -62,8 +62,7 @@ protected:
 	void update(float dt);
 	void lateUpdate(float dt);
 	void render();
-	void changeScene(); // changeScene last so objects can finish the update loop
-	// without breaking.
+	void changeScene(); // changeScene last so objects can finish the update loop without breaking.
 	void flushDestroyQueue(); // clear objects that were destroyed this game tick. (done at end so any objects with refrences to them can finish running)
 
 // Delete copy constructor and assignment operator

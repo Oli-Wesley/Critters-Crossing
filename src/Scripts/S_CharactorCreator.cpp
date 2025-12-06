@@ -68,54 +68,32 @@ void S_CharactorCreator::start()
 
 	PrefabRegistry* pref = PrefabRegistry::get();
 	//person object.
-	person_obj = pref->InstantiatePrefab("P_RenderableObject", "person");
-	game_object->addChild(person_obj);
+	person_obj = game_object->addChild(pref->InstantiatePrefab("P_RenderableObject", "person"));
 	person_obj->getTransform()->setLocalZheight(1);
 
 	//clothes object.
-	clothes_obj = pref->InstantiatePrefab("P_RenderableObject", "clothes");
-	game_object->addChild(clothes_obj);
+	clothes_obj = game_object->addChild(pref->InstantiatePrefab("P_RenderableObject", "clothes"));
 	clothes_obj->getTransform()->setLocalZheight(1.1);
 
 	//hair object.
-	hair_obj = pref->InstantiatePrefab("P_RenderableObject", "hair");
-	game_object->addChild(hair_obj);
+	hair_obj = game_object->addChild(pref->InstantiatePrefab("P_RenderableObject", "hair"));
 	hair_obj->getTransform()->setLocalZheight(1.5);
 
 	//facial_hair object.
-	facial_hair_obj = pref->InstantiatePrefab("P_RenderableObject", "facial_hair");
-	game_object->addChild(facial_hair_obj);
+	facial_hair_obj = game_object->addChild(pref->InstantiatePrefab("P_RenderableObject", "facial_hair"));
 	facial_hair_obj->getTransform()->setLocalZheight(1.2);
 
 	//hats object.
-	hats_obj = pref->InstantiatePrefab("P_RenderableObject", "hat");
-	game_object->addChild(hats_obj);
+	hats_obj = game_object->addChild(pref->InstantiatePrefab("P_RenderableObject", "hat"));
 	hats_obj->getTransform()->setLocalZheight(1.6);
 
 	//extras object.
-	extras_obj = pref->InstantiatePrefab("P_RenderableObject", "extras");
-	game_object->addChild(extras_obj);
+	extras_obj = game_object->addChild(pref->InstantiatePrefab("P_RenderableObject", "extras"));
 	extras_obj->getTransform()->setLocalZheight(1.4);
 
 	//eyes object. 
-	eyes_obj = pref->InstantiatePrefab("P_RenderableObject", "eyes");
-	game_object->addChild(eyes_obj);
+	eyes_obj = game_object->addChild(pref->InstantiatePrefab("P_RenderableObject", "eyes"));
 	eyes_obj->getTransform()->setLocalZheight(1.3);
-}
-
-// iterate over map, destroy all textures.
-void S_CharactorCreator::onDestroy()
-{
-	std::map<categories, std::vector<std::pair<sf::Texture*, float>>>::iterator it = asset_database.begin();
-	// Iterating over the map using Iterator till map end.
-	while (it != asset_database.end()) {
-		// Accessing the value
-		std::vector<std::pair<sf::Texture*, float>> val = it->second;
-		for (std::pair<sf::Texture*, float> el : val) {
-			delete el.first;
-		}
-		it++;
-	}
 }
 
 void S_CharactorCreator::update(float dt)
@@ -227,11 +205,11 @@ std::vector<GameObject*> S_CharactorCreator::getCurrentCharacter()
 
 sf::Texture* S_CharactorCreator::getRandomTextureFromkey(categories category)
 {
-	std::vector<std::pair<sf::Texture*, float>> array = asset_database[category];
+	std::vector<std::pair<std::unique_ptr<sf::Texture>, float>>& array = asset_database[category];
 
 	// Calculate total weight
 	float total_weight = 0.0f;
-	for (std::pair<sf::Texture*, float> pair : array)
+	for (const std::pair<std::unique_ptr<sf::Texture>, float>& pair : array)
 		total_weight += pair.second;
 
 	if (total_weight <= 0.f) return nullptr;
@@ -254,7 +232,7 @@ sf::Texture* S_CharactorCreator::getRandomTextureFromkey(categories category)
 			case Extras:      current_character.extras = count; break;
 			case Eyes:        current_character.eyes = count; break;
 			}
-			return pair.first;
+			return pair.first.get();
 		}
 		count++;
 	}
@@ -265,11 +243,10 @@ sf::Texture* S_CharactorCreator::getRandomTextureFromkey(categories category)
 // map_key = catagory that it can be. 
 bool S_CharactorCreator::addTextureToMap(categories map_key, std::string texture_path, float spawn_probability)
 {
-	sf::Texture* tex = new sf::Texture;
+	std::unique_ptr<sf::Texture> tex = std::make_unique<sf::Texture>();
 	if (tex->loadFromFile(relative_path + texture_path))
 	{
-		std::pair<sf::Texture*, float> pair = { tex, spawn_probability };
-		asset_database[map_key].push_back(pair);
+		asset_database[map_key].emplace_back(std::move(tex), spawn_probability);
 		return 1;
 	}
 	std::cout << "failed to load texture: " << relative_path + texture_path << std::endl;

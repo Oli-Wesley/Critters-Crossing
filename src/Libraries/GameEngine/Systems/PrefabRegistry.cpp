@@ -13,12 +13,12 @@ PrefabRegistry* PrefabRegistry::get()
 }
 
 void PrefabRegistry::RegisterPrefab(
-	const std::string& name, std::function<GameObject* ()> constructor)
+	const std::string& name, std::function<std::unique_ptr<GameObject>()> constructor)
 {
 	prefabRegistry[name] = constructor;
 }
 
-GameObject* PrefabRegistry::InstantiatePrefab(std::string name)
+std::unique_ptr<GameObject> PrefabRegistry::InstantiatePrefab(std::string name)
 {
 	auto it = prefabRegistry.find(name);
 	if (it != prefabRegistry.end())
@@ -28,38 +28,37 @@ GameObject* PrefabRegistry::InstantiatePrefab(std::string name)
 	return nullptr;
 }
 
-GameObject*
-PrefabRegistry::InstantiatePrefab(std::string name, sf::Vector2f position)
+std::unique_ptr<GameObject> PrefabRegistry::InstantiatePrefab(std::string name, sf::Vector2f position)
 {
-	GameObject* obj = InstantiatePrefab(name);
+	std::unique_ptr<GameObject> obj = InstantiatePrefab(name);
 	obj->getTransform()->setLocalPosition(position);
 	return obj;
 }
 
-GameObject*
+std::unique_ptr<GameObject>
 PrefabRegistry::InstantiatePrefab(std::string name, float x, float y)
 {
 	return InstantiatePrefab(name, sf::Vector2f(x, y));
 }
 
-GameObject* PrefabRegistry::InstantiatePrefab(std::string name, std::string new_name)
+std::unique_ptr<GameObject> PrefabRegistry::InstantiatePrefab(std::string name, std::string new_name)
 {
-	GameObject* obj= InstantiatePrefab(name);
+	std::unique_ptr<GameObject> obj= InstantiatePrefab(name);
 	obj->setName(new_name);
 	return obj;
 }
 
 
-GameObject* PrefabRegistry::InstantiatePrefab(std::string name, std::string new_name, sf::Vector2f position)
+std::unique_ptr<GameObject> PrefabRegistry::InstantiatePrefab(std::string name, std::string new_name, sf::Vector2f position)
 {
-	GameObject* obj = InstantiatePrefab(name, position);
+	std::unique_ptr<GameObject> obj = InstantiatePrefab(name, position);
 	obj->setName(new_name);
 	return obj;
 }
 
-GameObject* PrefabRegistry::InstantiatePrefab(std::string name, std::string new_name, float x, float y)
+std::unique_ptr<GameObject> PrefabRegistry::InstantiatePrefab(std::string name, std::string new_name, float x, float y)
 {
-	GameObject* obj = InstantiatePrefab(name, sf::Vector2f(x,y));
+	std::unique_ptr<GameObject> obj = InstantiatePrefab(name, sf::Vector2f(x,y));
 	obj->setName(new_name);
 	return obj;
 }

@@ -1,7 +1,7 @@
 #pragma once
-
 #include <SFML/Graphics/Color.hpp>
 #include "SFML/System/Vector2.hpp"
+#include <memory>
 // prototype gameObject so it is happy at compile time.
 class GameObject;
 
@@ -10,14 +10,14 @@ class Scene
 public:
 	Scene();
 	~Scene();
-	GameObject* scene_root; // Empty GameObject at 0,0 where everything starts
+	std::unique_ptr<GameObject> scene_root = nullptr; // Empty GameObject at 0,0 where everything starts
 	// from.
-	GameObject* dont_destroy = nullptr;
+	std::unique_ptr<GameObject> dont_destroy = nullptr;
 
-	GameObject* unload(); // Returns Game Objects with Persistance between scenes
+	std::unique_ptr<GameObject> unload(); // Returns Game Objects with Persistance between scenes
 	// (and their childeren)
 
-	virtual void load(GameObject* dont_destroy);
+	virtual void load(std::unique_ptr<GameObject> dont_destroy);
 
 	sf::Color getSceneColor() { return scene_background_color; };
 

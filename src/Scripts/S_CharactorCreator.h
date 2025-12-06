@@ -30,7 +30,6 @@ private:
 
 public:
 	void start() override;
-	void onDestroy() override;
 	void update(float dt) override;
 
 	void setTargetPos(int x_pos);
@@ -56,7 +55,7 @@ private:
 	currentCharacter current_character;
 
 	std::string relative_path = "../Data/Images/PeopleLayers/";
-	std::map<categories, std::vector<std::pair<sf::Texture*, float>>> asset_database;
+	std::map<categories, std::vector<std::pair<std::unique_ptr<sf::Texture>, float>>> asset_database;
 
 	float change_distinct_features = 0.5;
 	bool addTextureToMap(categories map_key, std::string texture_path, float spawn_probability);

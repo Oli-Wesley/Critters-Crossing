@@ -4,9 +4,9 @@
 
 REGISTER_PREFAB(
 	P_NumberDisplay,            // name
-	[]() -> GameObject* // lambda construction func
+	[]() -> std::unique_ptr<GameObject> // lambda construction func
 	{
-		GameObject* game_object = new GameObject("Number_Display");
+		std::unique_ptr<GameObject> game_object = std::make_unique<GameObject>("Number_Display");
 		TextComponent* text_comp = game_object->addComponent<TextComponent>();
 		game_object->addComponent<TextRenderer>();
 		game_object->getTransform()->setLocalZheight(1);

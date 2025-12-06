@@ -6,7 +6,9 @@ class GameObject;
 class IComponent
 {
 public:
-	virtual ~IComponent() = default;
+	virtual ~IComponent() {
+		onDestroy();
+	}
 
 	virtual void start() {}    // Called once when the GameObject is first enabled
 	virtual void onEnable() {} // Called when the component is enabled

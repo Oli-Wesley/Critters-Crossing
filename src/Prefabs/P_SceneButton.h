@@ -3,9 +3,9 @@
 
 REGISTER_PREFAB(
 	P_SceneButton,            // name
-	[]()->GameObject* // lambda construction func
+	[]() -> std::unique_ptr<GameObject> // lambda construction func
 	{
-		GameObject* game_object = new GameObject("Scene_Button");
+		std::unique_ptr<GameObject> game_object = std::make_unique<GameObject>("Scene_Button");
 		game_object->addComponent<Texture>();
 		game_object->addComponent<Clickable>();
 		game_object->addComponent<BoxCollider>();

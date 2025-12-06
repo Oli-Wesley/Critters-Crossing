@@ -3,9 +3,9 @@
 
 REGISTER_PREFAB(
 	P_RenderableObject,            // name
-	[]() -> GameObject* // lambda construction func
+	[]() -> std::unique_ptr<GameObject> // lambda construction func
 	{
-		GameObject* game_object = new GameObject("Renderable_Object");
+		std::unique_ptr<GameObject> game_object = std::make_unique<GameObject>("Renderable_Object");
 		game_object->addComponent<SpriteRenderer>();
 		game_object->addComponent<Texture>();
 

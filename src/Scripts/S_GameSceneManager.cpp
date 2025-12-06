@@ -57,7 +57,7 @@ void S_GameSceneManager::setupPassport()
 	// give the passport the current character, then generate a similar one (generating similar one returns bool, true if the character is notably different)
 	s_passport->placeCharacter(s_character_creator->getCurrentCharacter());
 	// generate another character if similar enough to be accepted set passports accepted value to true.
-	s_passport->setShouldBeAccepted(s_character_creator->createSimilarCharacter()); 
+	s_passport->setShouldBeAccepted(s_character_creator->createSimilarCharacter());
 
 	obj_character_creator->getTransform()->setLocalPosition(-250, 25);
 	s_character_creator->setTargetPos(25);
@@ -86,11 +86,13 @@ void S_GameSceneManager::checkResult()
 		// correct stamp for the character
 		if (s_passport->checkCorrectness()) {
 			correct_count++;
-			std::cout << "passport has been stamped correctly\n";
+			if (GameSystem::get()->isDebug())
+				std::cout << "passport has been stamped correctly\n";
 		}
 		else {
 			incorrect_count++;
-			std::cout << "passport has been stamped incorrectly\n";
+			if (GameSystem::get()->isDebug())
+				std::cout << "passport has been stamped incorrectly\n";
 		}
 
 		s_passport->stamp(2); // clear passport
@@ -100,11 +102,11 @@ void S_GameSceneManager::checkResult()
 
 void S_GameSceneManager::gameOver()
 {
-	GameObject* dont_destroy = GameSystem::get()->getCurrentScene()->dont_destroy;
+	GameObject* dont_destroy = GameSystem::get()->getCurrentScene()->dont_destroy.get();
 
 	// fallback to create global data here, incase title screen was never run (SHOULD NEVER HAPPEN IN GAMEPLAY, BUT HAPPENS IN TESTING DUE TO LOADING THE SCENES DIRECTLY AND SKIPPING TITLE SCENE)
 	if (dont_destroy->getChildByName("global_data") == nullptr) {
-		dont_destroy->addChild(new GameObject("global_data"))->addScript<S_GlobalData>();
+		dont_destroy->addChild(std::make_unique<GameObject>("global_data"))->addScript<S_GlobalData>();
 	}
 
 	// set score and high score to global data.

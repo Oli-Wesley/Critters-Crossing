@@ -31,9 +31,10 @@ void GameSystem::start()
 				// unload current scene
 				currentScene->unload();
 				// destroy dont_destroy to allow anything attatched to it to run its unload functions.
-				currentScene->dont_destroy->destroy();
+				currentScene->dont_destroy = nullptr;
 				// close the window.
 				window->close();
+				return;
 			}
 		}
 		runGameLoop(clock.restart().asSeconds()); // pass time since last frame as
@@ -224,61 +225,33 @@ void GameSystem::changeScene()
 {
 	if (scenes[target_scene] != currentScene)
 	{
-		GameObject* dont_destroy = nullptr;
+		std::unique_ptr<GameObject> dont_destroy = nullptr;
+
+		// move
 		if (currentScene != nullptr)
 			dont_destroy = currentScene->unload();
 		currentScene = scenes[target_scene];
 		if (currentScene)
-			currentScene->load(dont_destroy);
+			currentScene->load(std::move(dont_destroy));
 		else
 			std::cout << "FAILED TO LOAD SCENE, SCENE EXISTS BUT RETURNS NULLPTR";
 	}
 	// resize to window size.
 	currentScene->onWindowResize(sf::Vector2i(resolution.width, resolution.height));
-
 }
 
-// this has caused me great pain, thanks mr gpt for helping me fix all my logic errors (rare AI W) 
 void GameSystem::flushDestroyQueue()
 {
-	std::vector<GameObject*> finalList;
-
-	// get every object that needs destroying (children of children of children ect...)
 	for (GameObject* obj : destroy_queue)
 	{
-		// add the object
-		finalList.push_back(obj);
+		if (!obj) continue;
 
-		// add all of its children and deeper descendents
-		auto allChildren = obj->getAllChilderen();
-		finalList.insert(finalList.end(), allChildren.begin(), allChildren.end());
-	}
-
-	// make sure no elements were duplicated in the list
-	std::sort(finalList.begin(), finalList.end());
-	finalList.erase(std::unique(finalList.begin(), finalList.end()), finalList.end());
-
-	// remove all parents from gameObjects before destroying to prevent nullptr errors
-	for (GameObject* obj : finalList)
-	{
-		if (auto* parent = obj->getParent())
+		// remove object from parent
+		if (GameObject* parent = obj->getParent())
 		{
-			auto& v = parent->getChilderen();
-			v.erase(std::remove(v.begin(), v.end(), obj), v.end());
+			parent->releaseChild(obj);
 		}
 	}
-
-	// destroy everything
-	for (GameObject* obj : finalList)
-	{
-		// destroy components
-		for (auto* comp : obj->getAllComponents()) {
-			comp->onDestroy();
-			delete comp;
-		}
-
-		delete obj;
-	}
-
+	// empty destroy queue. 
 	destroy_queue.clear();
 }

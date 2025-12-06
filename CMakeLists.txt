@@ -18,7 +18,7 @@ FetchContent_MakeAvailable(SFML)    # Makes sure SFML and its dependencies are a
 #---- File management & .exe creation ----#
 
 file(GLOB_RECURSE LIBRARY_FILES "src/Libraries/*.cpp" "src/Libraries/*.h", "src/Libraries/*.hpp")
-file(GLOB_RECURSE PREFABS "src/PREFABS/*.cpp" "src/PREFABS/*.h", "src/PREFABS/*.hpp")
+file(GLOB_RECURSE PREFABS "src/Prefabs/*.cpp" "src/Prefabs/*.h", "src/Prefabs/*.hpp")
 file(GLOB_RECURSE SCENES "src/Scenes/*.cpp" "src/Scenes/*.h", "src/Scenes/*.hpp")
 file(GLOB_RECURSE SCRIPTS "src/Scripts/*.cpp" "src/Scripts/*.h", "src/Scripts/*.hpp")
 set(SOURCE_FILES "src/main.cpp" )  # Sets variable SOURCE_FILES to hold names & locations of files that need to be compiled into the application
