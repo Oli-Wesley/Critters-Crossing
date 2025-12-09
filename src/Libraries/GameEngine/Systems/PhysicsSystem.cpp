@@ -127,6 +127,7 @@ void PhysiscsSystem::handleCollisions(
 	previousFrameCollisions = currentCollisions;
 }
 
+// check overlap betweeen 2 rects
 bool PhysiscsSystem::checkCollision(BoxCollider* a, BoxCollider* b)
 {
 	sf::FloatRect a_rect = a->getCollider();

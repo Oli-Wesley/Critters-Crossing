@@ -43,6 +43,7 @@ void GameSystem::start(std::string start_scene)
 				window->close();
 				return;
 			}
+			// debug keys
 			else if (e.type == sf::Event::KeyPressed) {
 				if (e.key.code == sf::Keyboard::F1)
 				{
@@ -212,6 +213,7 @@ void GameSystem::render()
 	if (currentScene != nullptr)
 	{
 		window->clear(currentScene->getSceneColor());
+		// get all renderables from the scene (scene_root and dont_destroy)
 		std::vector<IRenderable*> renderables = currentScene->scene_root->render();
 		std::vector<IRenderable*> other = currentScene->dont_destroy->render();
 		renderables.insert(renderables.end(), other.begin(), other.end());
@@ -219,7 +221,6 @@ void GameSystem::render()
 		bool changed = 1;
 		IRenderable* hold;
 		int length = renderables.size();
-
 		while (changed)
 		{
 			changed = 0;
@@ -249,21 +250,23 @@ void GameSystem::render()
 
 void GameSystem::changeScene()
 {
+	// if scene is different
 	if (scenes[target_scene] != currentScene)
 	{
 		std::unique_ptr<GameObject> dont_destroy = nullptr;
 
-		// move
+		// move dont_destroy between scenes. 
 		if (currentScene != nullptr)
 			dont_destroy = currentScene->unload();
+		// get current scene and load it
 		currentScene = scenes[target_scene];
 		if (currentScene)
 			currentScene->load(std::move(dont_destroy));
 		else
 			std::cout << "FAILED TO LOAD SCENE, SCENE EXISTS BUT RETURNS NULLPTR";
+		// resize to window size.
+		currentScene->onWindowResize(sf::Vector2i(resolution.width, resolution.height));
 	}
-	// resize to window size.
-	currentScene->onWindowResize(sf::Vector2i(resolution.width, resolution.height));
 }
 
 void GameSystem::flushDestroyQueue()
@@ -275,7 +278,7 @@ void GameSystem::flushDestroyQueue()
 		// remove object from parent
 		if (GameObject* parent = obj->getParent())
 		{
-			parent->releaseChild(obj);
+			parent->releaseChild(obj); // allow the object to go ot of scope, destroying it 
 		}
 	}
 	// empty destroy queue. 

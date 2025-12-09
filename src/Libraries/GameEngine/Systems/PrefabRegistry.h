@@ -47,6 +47,7 @@ public:
 protected:
     PrefabRegistry() {}
 
+    // map for storing prefabs and their constructor functions
     std::unordered_map<std::string, std::function<std::unique_ptr<GameObject>()>> prefabRegistry;
 
 	static PrefabRegistry* instance;

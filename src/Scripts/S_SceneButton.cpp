@@ -26,8 +26,11 @@ void S_SceneButton::update(float dt)
 
 void S_SceneButton::onClick()
 {
-	if (target == "~quit~") {
+	if (target == "~quit~") { // special case to quit
 		GameSystem::get()->getWindow()->close();
+	}
+	else if (target == "~none") { // special case to do nothing
+		return;
 	}
 	GameSystem::get()->switchScene(target);
 }

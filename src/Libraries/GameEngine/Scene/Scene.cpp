@@ -13,13 +13,14 @@ Scene::~Scene()
 std::unique_ptr<GameObject> Scene::unload()
 {
 	onUnload(); // call each scene's onUnload functions.
-	scene_root = nullptr;
+	scene_root = nullptr; // make scene root go out of scope to destroy it.
 	return std::move(dont_destroy);
 }
 
+
 void Scene::load(std::unique_ptr<GameObject> _dont_destroy)
 {
-	// call each scene's individual load function.
+	// make or move dont destroy if it exists
 	if (_dont_destroy == nullptr) {
 		dont_destroy = std::make_unique<GameObject>("Dont_Destroy");
 	}
@@ -30,6 +31,7 @@ void Scene::load(std::unique_ptr<GameObject> _dont_destroy)
 	load(); // actually load the scene (create gameobjects and such)
 }
 
+// UNUSED CURRENTLY (does work though)
 void Scene::onWindowResize(sf::Vector2i new_size)
 {
 	// Calculate scale 

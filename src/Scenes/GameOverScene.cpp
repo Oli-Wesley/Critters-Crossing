@@ -46,11 +46,13 @@ void GameOverScene::load()
 	  dont_destroy->addChild(std::make_unique<GameObject>("global_data"))->addScript<S_GlobalData>();
   }
 
+  // score
   GameObject* score_obj = scene_root->addChild(pref->InstantiatePrefab("P_NumberDisplay", "Score", 660, 125));
   int score = dont_destroy->getChildByName("global_data")->getComponent<S_GlobalData>()->score;
   score_obj->getComponent<S_ScoreDisplay>()->setvalue(score);
   score_obj->getComponent<TextComponent>()->setCharacterSize(25);
 
+  // jogj scpre
   GameObject* high_score_obj = scene_root->addChild(pref->InstantiatePrefab("P_NumberDisplay", "HighScore", 660, 195));
   int high_score = dont_destroy->getChildByName("global_data")->getComponent<S_GlobalData>()->high_score;
   high_score_obj->getComponent<S_ScoreDisplay>()->setvalue(high_score);

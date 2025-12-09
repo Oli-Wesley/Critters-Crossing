@@ -5,8 +5,10 @@
 #include <memory>
 #include <iostream>
 
+// constructor requires a name
 GameObject::GameObject(std::string _name)
 {
+	// make transform object and set name
 	transform = std::make_unique<Transform>();
 	transform->setGameObject(this);
 	setName(_name);
@@ -14,6 +16,7 @@ GameObject::GameObject(std::string _name)
 
 GameObject::~GameObject()
 {
+	// output when gameObject is destroyed when debug is enabled
 	if (GameSystem::get()->isDebug())
 		std::cout << "Destroyed GameObject with name: [" << name << "]\n";
 }
@@ -21,6 +24,7 @@ GameObject::~GameObject()
 // update physics with given timestep (affects all children aswell)
 void GameObject::physicsUpdate(float timestep)
 {
+	// if enabled update
 	if (is_active) {
 		for (std::unique_ptr<IComponent>& comp : components) {
 			IPhysicsObject* physics = dynamic_cast<IPhysicsObject*>(comp.get());
@@ -105,7 +109,7 @@ void GameObject::destroy()
 
 GameObject* GameObject::addChild(std::unique_ptr<GameObject> _game_obj)
 {
-	GameObject* rawPtr = _game_obj.get(); // Grab the raw pointer before moving
+	GameObject* rawPtr = _game_obj.get(); // Grab the raw pointer before moving so it can be returned
 	rawPtr->setParent(this);
 
 	// Move ownership into the vector
